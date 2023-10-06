@@ -10,16 +10,12 @@
 #include <stdarg.h>
 #include <string.h>
 #include "main.h"
-
+#include "usart.h"
 
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 
-uint8_t g_uart1_transmit_buff[1];
-
 PUTCHAR_PROTOTYPE {
-//    g_uart1_transmit_buff[0] = (uint8_t) ch;
-//    HAL_UART_Transmit(&huart1, g_uart1_transmit_buff, 1, 100);
-    return ch;
+    return HAL_UART_Transmit(&huart2, (const uint8_t *) &ch, 1, 1000);
 }
 
 #define MAX_LOG_MSG_LEN            (512)
