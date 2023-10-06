@@ -15,7 +15,7 @@
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 
 PUTCHAR_PROTOTYPE {
-    return HAL_UART_Transmit(&huart2, (const uint8_t *) &ch, 1, 1000);
+    return HAL_UART_Transmit(&huart1, (const uint8_t *) &ch, 1, 1000);
 }
 
 #define MAX_LOG_MSG_LEN            (512)
