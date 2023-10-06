@@ -20,9 +20,10 @@
 #include "main.h"
 #include "gpio.h"
 
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "utilities/log.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
