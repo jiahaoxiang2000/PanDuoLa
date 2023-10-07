@@ -30,11 +30,13 @@ INCLUDE_DIRECTORIES(
 	rt-thread/libcpu/arm/common
 	rt-thread/libcpu/arm/cortex-m4
 	rt-thread/components/drivers/include
+	rt-thread/components/drivers/spi
 	board
 	board/CubeMX_Config/Inc
 	libraries/HAL_Drivers
 	libraries/HAL_Drivers/config
 	libraries/HAL_Drivers/CMSIS/Include
+	board/ports/lcd
 	rt-thread/components/finsh
 	.
 	rt-thread/include
@@ -44,6 +46,7 @@ INCLUDE_DIRECTORIES(
 	rt-thread/components/libc/posix/io/eventfd
 	rt-thread/components/libc/posix/io/poll
 	rt-thread/components/libc/posix/ipc
+	packages/qrcode-latest
 )
 
 ADD_DEFINITIONS(
@@ -78,13 +81,20 @@ SET(PROJECT_SOURCES
 	rt-thread/components/drivers/ipc/waitqueue.c
 	rt-thread/components/drivers/ipc/workqueue.c
 	rt-thread/components/drivers/misc/pin.c
+	rt-thread/components/drivers/misc/rt_drv_pwm.c
 	rt-thread/components/drivers/serial/serial.c
+	rt-thread/components/drivers/spi/spi_core.c
+	rt-thread/components/drivers/spi/spi_dev.c
 	board/CubeMX_Config/Src/stm32l4xx_hal_msp.c
 	board/board.c
 	libraries/HAL_Drivers/drv_common.c
 	libraries/HAL_Drivers/drv_gpio.c
+	libraries/HAL_Drivers/drv_pwm.c
+	libraries/HAL_Drivers/drv_spi.c
+	libraries/HAL_Drivers/drv_tim.c
 	libraries/HAL_Drivers/drv_usart.c
 	libraries/STM32L4xx_HAL/CMSIS/Device/ST/STM32L4xx/Source/Templates/gcc/startup_stm32l475xx.s
+	board/ports/lcd/drv_lcd.c
 	rt-thread/components/finsh/shell.c
 	rt-thread/components/finsh/msh.c
 	rt-thread/components/finsh/msh_parse.c
@@ -102,26 +112,33 @@ SET(PROJECT_SOURCES
 	rt-thread/src/thread.c
 	rt-thread/src/timer.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cryp.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_usart.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_usart_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_comp.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rng.c
 	libraries/STM32L4xx_HAL/CMSIS/Device/ST/STM32L4xx/Source/Templates/system_stm32l4xx.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_usart.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cryp_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_lptim.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_comp.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rng.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
+	packages/qrcode-latest/qrcode.c
 )
 
 LINK_DIRECTORIES(
