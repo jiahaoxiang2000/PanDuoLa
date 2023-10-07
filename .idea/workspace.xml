@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="add rt-thread  board sdk">
+      <change beforePath="$PROJECT_DIR$/.idea/PanDuoLa.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/OCD_PanDuoLa.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="noOs" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="c7q6nsph" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2023" />
+    <option name="minorVersion" value="2.2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2WLOsCmrtoINHXC9l8EzZ2qFuey" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/xjh/CLionProjects/PanDuoLa/User/utils&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\xjh\CLionProjects\PanDuoLa\User\utils" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="" />
+      <created>1696508597764</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1696508597764</updated>
+      <workItem from="1696508598834" duration="4314000" />
+      <workItem from="1696553080612" duration="194000" />
+      <workItem from="1696553290409" duration="10332000" />
+      <workItem from="1696638388557" duration="136000" />
+    </task>
+    <task id="LOCAL-00001" summary="Add vcs.xml and modify main() function&#10;&#10;Added a vcs.xml file for version control mappings. Refactored main() function in main.c to enhance readability and added functionality to blink Red and Green LEDs.&#10;&#10;The vcs.xml was necessary to handle version control system mappings and enable the use of Git. With respect to the edits in main.c, indentation style has been changed to improve code clarity. Also, added code segments to enable blinking of Red and Green LEDs along with the existing Blue LED, thereby making better use of the RGB LED module.">
+      <option name="closed" value="true" />
+      <created>1696512784364</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1696512784364</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add utility and log files, refactor main function&#10;&#10;Added new utility files 'tools.c' and 'tools.h' for providing a delay function that can be used throughout the application. Created logging related .c and .h files for enabling debug and error messages for better troubleshooting. Refactored main() function to include the new utility and log files.&#10;&#10;The delay function is a critical utility requirement, often used in embedded systems programming for synchronization. The logging files are essential for providing detailed insights during troubleshooting by outputting log messages of different severity levels (Debug, Info, Warn, Error). Main() function refactoring has been done to keep code organized and better structured.">
+      <option name="closed" value="true" />
+      <created>1696558639197</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1696558639197</updated>
+    </task>
+    <task id="LOCAL-00003" summary="&quot;Added USART functionality&#10;&#10;Implemented USART functionality in usart.h, usart.c, and stm32l4xx_hal_uart.h. Implemented functions for handling UART, initializing UART, and handling relevant GPIO. This should enable communication over UART.&quot;">
+      <option name="closed" value="true" />
+      <created>1696560075613</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1696560075613</updated>
+    </task>
+    <task id="LOCAL-00004" summary="&quot;Switched UART peripheral from USART2 to USART1&#10;&#10;Changes have been made across multiple files to switch from USART2 to USART1. The motivation behind this update is to accommodate for the hardware redesign where the peripheral device now connects to USART1. Corresponding changes have also been made in the logs to use USART1 for debug message transmissions.&quot;">
+      <option name="closed" value="true" />
+      <created>1696593092434</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1696593092434</updated>
+    </task>
+    <task id="LOCAL-00005" summary="use rt-thread  board sdk">
+      <option name="closed" value="true" />
+      <created>1696638293385</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1696638293385</updated>
+    </task>
+    <task id="LOCAL-00006" summary="use rt-thread  board sdk">
+      <option name="closed" value="true" />
+      <created>1696638298885</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1696638298885</updated>
+    </task>
+    <task id="LOCAL-00007" summary="use rt-thread  board sdk">
+      <option name="closed" value="true" />
+      <created>1696638311190</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1696638311190</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticEditVcpkgJson value="false" />
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticFoundErrors value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="noOs" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add vcs.xml and modify main() function&#10;&#10;Added a vcs.xml file for version control mappings. Refactored main() function in main.c to enhance readability and added functionality to blink Red and Green LEDs.&#10;&#10;The vcs.xml was necessary to handle version control system mappings and enable the use of Git. With respect to the edits in main.c, indentation style has been changed to improve code clarity. Also, added code segments to enable blinking of Red and Green LEDs along with the existing Blue LED, thereby making better use of the RGB LED module." />
+    <MESSAGE value="Add utility and log files, refactor main function&#10;&#10;Added new utility files 'tools.c' and 'tools.h' for providing a delay function that can be used throughout the application. Created logging related .c and .h files for enabling debug and error messages for better troubleshooting. Refactored main() function to include the new utility and log files.&#10;&#10;The delay function is a critical utility requirement, often used in embedded systems programming for synchronization. The logging files are essential for providing detailed insights during troubleshooting by outputting log messages of different severity levels (Debug, Info, Warn, Error). Main() function refactoring has been done to keep code organized and better structured." />
+    <MESSAGE value="&quot;Added USART functionality&#10;&#10;Implemented USART functionality in usart.h, usart.c, and stm32l4xx_hal_uart.h. Implemented functions for handling UART, initializing UART, and handling relevant GPIO. This should enable communication over UART.&quot;" />
+    <MESSAGE value="&quot;Switched UART peripheral from USART2 to USART1&#10;&#10;Changes have been made across multiple files to switch from USART2 to USART1. The motivation behind this update is to accommodate for the hardware redesign where the peripheral device now connects to USART1. Corresponding changes have also been made in the logs to use USART1 for debug message transmissions.&quot;" />
+    <MESSAGE value="use rt-thread  board sdk" />
+    <option name="LAST_COMMIT_MESSAGE" value="use rt-thread  board sdk" />
+  </component>
+</project>
