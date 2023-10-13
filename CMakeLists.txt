@@ -25,6 +25,10 @@ SET(CMAKE_CXX_STANDARD 14)
 PROJECT(rtthread C CXX ASM)
 INCLUDE_DIRECTORIES(
 	applications
+	rt-thread/components/net/at/include
+	rt-thread/components/net/at/at_socket
+	packages/at_device-latest/inc
+	packages/at_device-latest/class/esp8266
 	rt-thread/components/libc/compilers/common/include
 	rt-thread/components/libc/compilers/newlib
 	rt-thread/libcpu/arm/common
@@ -47,6 +51,11 @@ INCLUDE_DIRECTORIES(
 	rt-thread/components/libc/posix/io/poll
 	rt-thread/components/libc/posix/ipc
 	packages/qrcode-latest
+	rt-thread/components/net/netdev/include
+	rt-thread/components/net/sal/include
+	rt-thread/components/net/sal/include/socket
+	rt-thread/components/net/sal/impl
+	rt-thread/components/net/sal/include/socket/sys_socket
 )
 
 ADD_DEFINITIONS(
@@ -60,6 +69,14 @@ ADD_DEFINITIONS(
 
 SET(PROJECT_SOURCES
 	applications/main.c
+	rt-thread/components/net/at/src/at_utils.c
+	rt-thread/components/net/at/at_socket/at_socket.c
+	rt-thread/components/net/at/src/at_client.c
+	rt-thread/components/net/at/src/at_cli.c
+	packages/at_device-latest/src/at_device.c
+	packages/at_device-latest/class/esp8266/at_socket_esp8266.c
+	packages/at_device-latest/samples/at_sample_esp8266.c
+	packages/at_device-latest/class/esp8266/at_device_esp8266.c
 	rt-thread/components/libc/compilers/common/cctype.c
 	rt-thread/components/libc/compilers/common/cstdlib.c
 	rt-thread/components/libc/compilers/common/cstring.c
@@ -139,6 +156,11 @@ SET(PROJECT_SOURCES
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
 	packages/qrcode-latest/qrcode.c
+	rt-thread/components/net/netdev/src/netdev.c
+	rt-thread/components/net/netdev/src/netdev_ipaddr.c
+	rt-thread/components/net/sal/impl/af_inet_at.c
+	rt-thread/components/net/sal/socket/net_netdb.c
+	rt-thread/components/net/sal/src/sal_socket.c
 )
 
 LINK_DIRECTORIES(

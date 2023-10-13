@@ -22,11 +22,8 @@
   <component name="ChangeListManager">
     <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="Added RT-Thread SDK for the board and modified related files.&#10;&#10;This commit includes adding RT-Thread SDK to the project and modifying related files accordingly. These changes are necessary to utilize RT-Thread real-time operating system's functionalities for this project. Changes include new configuration files, assembler, C and XML source files.">
       <change beforePath="$PROJECT_DIR$/.config" beforeDir="false" afterPath="$PROJECT_DIR$/.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/applications/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rt-thread/libcpu/Kconfig" beforeDir="false" afterPath="$PROJECT_DIR$/rt-thread/libcpu/Kconfig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rtconfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/rtconfig.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
