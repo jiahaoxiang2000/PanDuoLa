@@ -17,10 +17,11 @@
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="MinSizeRel" ENABLED="true" CONFIG_NAME="MinSizeRel" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="Added RT-Thread SDK for the board and modified related files.&#10;&#10;This commit includes adding RT-Thread SDK to the project and modifying related files accordingly. These changes are necessary to utilize RT-Thread real-time operating system's functionalities for this project. Changes include new configuration files, assembler, C and XML source files.">
+    <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="Enable AT communication and other network configurations&#10;&#10;Enabled the use of 'System Work Queue', 'Software Layer(AT)', and Net Device in RT-Thread configuration. Enabled ESP8266 AT device for WiFi communication and set related configs. Updated include directories and the source files in the CMakeLists. Made corresponding header file changes. &#10;&#10;These changes were needed to include AT commands and configure network communication in the RT-Thread real-time operating system. Now the system can use AT commands to communicate with the WiFi module ESP8266 and perform related network tasks.">
       <change beforePath="$PROJECT_DIR$/.config" beforeDir="false" afterPath="$PROJECT_DIR$/.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
@@ -68,26 +69,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/xjh/CLionProjects/PanDuoLa/User/utils&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.advertisement.text.has.clang-format": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/xjh/CLionProjects/PanDuoLa/User/utils",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "CMakeSettings",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\xjh\CLionProjects\PanDuoLa\User\utils" />
@@ -211,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696640054833</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Enable AT communication and other network configurations&#10;&#10;Enabled the use of 'System Work Queue', 'Software Layer(AT)', and Net Device in RT-Thread configuration. Enabled ESP8266 AT device for WiFi communication and set related configs. Updated include directories and the source files in the CMakeLists. Made corresponding header file changes. &#10;&#10;These changes were needed to include AT commands and configure network communication in the RT-Thread real-time operating system. Now the system can use AT commands to communicate with the WiFi module ESP8266 and perform related network tasks.">
+      <option name="closed" value="true" />
+      <created>1697166090379</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1697166090379</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,6 +265,8 @@
     <MESSAGE value="add rt-thread  board sdk" />
     <MESSAGE value="add rt-thread  board sdk source" />
     <MESSAGE value="Added RT-Thread SDK for the board and modified related files.&#10;&#10;This commit includes adding RT-Thread SDK to the project and modifying related files accordingly. These changes are necessary to utilize RT-Thread real-time operating system's functionalities for this project. Changes include new configuration files, assembler, C and XML source files." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added RT-Thread SDK for the board and modified related files.&#10;&#10;This commit includes adding RT-Thread SDK to the project and modifying related files accordingly. These changes are necessary to utilize RT-Thread real-time operating system's functionalities for this project. Changes include new configuration files, assembler, C and XML source files." />
+    <MESSAGE value="add lcd driver&#10;&#10;open LCD device spi3.0 on the spi3 bus, use based utils functions" />
+    <MESSAGE value="Enable AT communication and other network configurations&#10;&#10;Enabled the use of 'System Work Queue', 'Software Layer(AT)', and Net Device in RT-Thread configuration. Enabled ESP8266 AT device for WiFi communication and set related configs. Updated include directories and the source files in the CMakeLists. Made corresponding header file changes. &#10;&#10;These changes were needed to include AT commands and configure network communication in the RT-Thread real-time operating system. Now the system can use AT commands to communicate with the WiFi module ESP8266 and perform related network tasks." />
+    <option name="LAST_COMMIT_MESSAGE" value="Enable AT communication and other network configurations&#10;&#10;Enabled the use of 'System Work Queue', 'Software Layer(AT)', and Net Device in RT-Thread configuration. Enabled ESP8266 AT device for WiFi communication and set related configs. Updated include directories and the source files in the CMakeLists. Made corresponding header file changes. &#10;&#10;These changes were needed to include AT commands and configure network communication in the RT-Thread real-time operating system. Now the system can use AT commands to communicate with the WiFi module ESP8266 and perform related network tasks." />
   </component>
 </project>

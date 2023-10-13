@@ -75,6 +75,14 @@
 
 /* DFS: device virtual file system */
 
+#define RT_USING_DFS
+#define DFS_USING_POSIX
+#define DFS_USING_WORKDIR
+#define DFS_FD_MAX 16
+#define RT_USING_DFS_V1
+#define DFS_FILESYSTEMS_MAX 4
+#define DFS_FILESYSTEM_TYPES_MAX 4
+#define RT_USING_DFS_DEVFS
 
 /* Device Drivers */
 
@@ -107,6 +115,10 @@
 
 /* POSIX (Portable Operating System Interface) layer */
 
+#define RT_USING_POSIX_FS
+#define RT_USING_POSIX_POLL
+#define RT_USING_POSIX_SELECT
+#define RT_USING_POSIX_SOCKET
 
 /* Interprocess Communication (IPC) */
 
@@ -122,7 +134,7 @@
 /* Docking with protocol stacks */
 
 #define SAL_USING_AT
-#define SAL_SOCKETS_NUM 16
+#define SAL_USING_POSIX
 #define RT_USING_NETDEV
 #define NETDEV_USING_IFCONFIG
 #define NETDEV_USING_PING
@@ -169,6 +181,13 @@
 
 /* IoT Cloud */
 
+#define PKG_USING_TENCENT_IOT_EXPLORER
+#define PKG_USING_TENCENT_IOT_EXPLORER_PRODUCT_ID "6YLIQALUFQ"
+#define PKG_USING_TENCENT_IOT_EXPLORER_DEVICE_NAME "test0"
+#define PKG_USING_TENCENT_IOT_EXPLORER_DEVICE_SECRET "x0WRPb2gqKp25+ZZezO5dA=="
+#define PKG_USING_DATA_TEMPLATE_PROTOCOL
+#define PKG_USING_SMART_LIGHT_SAMPLE
+#define PKG_USING_TENCENT_IOT_EXPLORER_LATEST_VERSION
 
 /* security packages */
 
@@ -188,8 +207,6 @@
 
 /* u8g2: a monochrome graphic library */
 
-#define PKG_USING_QRCODE
-#define PKG_USING_QRCODE_LATEST_VERSION
 
 /* tools packages */
 
