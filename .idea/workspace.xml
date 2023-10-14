@@ -22,9 +22,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="change environment to linux for development">
+      <change beforePath="$PROJECT_DIR$/.config" beforeDir="false" afterPath="$PROJECT_DIR$/.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rtconfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/rtconfig.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/st_b-l475e-iot01a.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/st_b-l475e-iot01a.cfg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +86,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.keymap",
     "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
@@ -95,9 +98,9 @@
     </key>
   </component>
   <component name="RunManager" selected="OpenOCD Download &amp; Run.rtthread.elf">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="rtthread.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="rtthread" TARGET_NAME="rtthread.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="rtthread" RUN_TARGET_NAME="rtthread.elf">
@@ -119,6 +122,9 @@
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="" />
@@ -132,6 +138,7 @@
       <workItem from="1696638388557" duration="136000" />
       <workItem from="1696638528659" duration="12473000" />
       <workItem from="1697266591614" duration="2401000" />
+      <workItem from="1697285069562" duration="7409000" />
     </task>
     <task id="LOCAL-00001" summary="Add vcs.xml and modify main() function&#10;&#10;Added a vcs.xml file for version control mappings. Refactored main() function in main.c to enhance readability and added functionality to blink Red and Green LEDs.&#10;&#10;The vcs.xml was necessary to handle version control system mappings and enable the use of Git. With respect to the edits in main.c, indentation style has been changed to improve code clarity. Also, added code segments to enable blinking of Red and Green LEDs along with the existing Blue LED, thereby making better use of the RGB LED module.">
       <option name="closed" value="true" />
@@ -221,7 +228,23 @@
       <option name="project" value="LOCAL" />
       <updated>1697166090379</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="change environment to linux for development">
+      <option name="closed" value="true" />
+      <created>1697271013648</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1697271013648</updated>
+    </task>
+    <task id="LOCAL-00013" summary="change environment to linux for development">
+      <option name="closed" value="true" />
+      <created>1697271221461</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1697271221461</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,6 +290,11 @@
     <MESSAGE value="Added RT-Thread SDK for the board and modified related files.&#10;&#10;This commit includes adding RT-Thread SDK to the project and modifying related files accordingly. These changes are necessary to utilize RT-Thread real-time operating system's functionalities for this project. Changes include new configuration files, assembler, C and XML source files." />
     <MESSAGE value="add lcd driver&#10;&#10;open LCD device spi3.0 on the spi3 bus, use based utils functions" />
     <MESSAGE value="Enable AT communication and other network configurations&#10;&#10;Enabled the use of 'System Work Queue', 'Software Layer(AT)', and Net Device in RT-Thread configuration. Enabled ESP8266 AT device for WiFi communication and set related configs. Updated include directories and the source files in the CMakeLists. Made corresponding header file changes. &#10;&#10;These changes were needed to include AT commands and configure network communication in the RT-Thread real-time operating system. Now the system can use AT commands to communicate with the WiFi module ESP8266 and perform related network tasks." />
-    <option name="LAST_COMMIT_MESSAGE" value="Enable AT communication and other network configurations&#10;&#10;Enabled the use of 'System Work Queue', 'Software Layer(AT)', and Net Device in RT-Thread configuration. Enabled ESP8266 AT device for WiFi communication and set related configs. Updated include directories and the source files in the CMakeLists. Made corresponding header file changes. &#10;&#10;These changes were needed to include AT commands and configure network communication in the RT-Thread real-time operating system. Now the system can use AT commands to communicate with the WiFi module ESP8266 and perform related network tasks." />
+    <MESSAGE value="change environment to linux for development" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

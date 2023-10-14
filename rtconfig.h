@@ -235,6 +235,19 @@
 
 /* Kendryte SDK */
 
+#define PKG_USING_RC522
+#define MFRC522_SPI_BUS_NAME "spi2"
+#define MFRC522_SPI_DEVICE_NAME "spi20"
+
+/* Notice: PH3 --> 115 */
+
+#define MFRC522_SS_PIN 27
+
+/* Notice: PH8 --> 120 */
+
+#define MFRC522_RST_PIN 28
+#define PKG_USING_RC522_SAMPLE
+#define PKG_USING_RC522_V10410
 
 /* AI packages */
 
@@ -309,6 +322,7 @@
 #define BSP_UART2_RX_USING_DMA
 #define BSP_UART2_TX_USING_DMA
 #define BSP_USING_SPI
+#define BSP_USING_SPI2
 #define BSP_USING_SPI3
 #define BSP_SPI3_TX_USING_DMA
 #define BSP_USING_PWM

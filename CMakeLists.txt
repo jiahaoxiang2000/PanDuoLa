@@ -52,6 +52,8 @@ INCLUDE_DIRECTORIES(
 	rt-thread/components/libc/posix/io/poll
 	rt-thread/components/libc/posix/io/eventfd
 	rt-thread/components/libc/posix/ipc
+	packages/rc522-v1.4.10
+	packages/rc522-v1.4.10/inc
 	rt-thread/components/net/netdev/include
 	rt-thread/components/net/sal/include
 	rt-thread/components/net/sal/include/socket
@@ -78,14 +80,14 @@ ADD_DEFINITIONS(
 
 SET(PROJECT_SOURCES
 	applications/main.c
-	rt-thread/components/net/at/src/at_cli.c
-	rt-thread/components/net/at/src/at_client.c
 	rt-thread/components/net/at/src/at_utils.c
+	rt-thread/components/net/at/src/at_cli.c
 	rt-thread/components/net/at/at_socket/at_socket.c
-	packages/at_device-latest/samples/at_sample_esp8266.c
-	packages/at_device-latest/class/esp8266/at_socket_esp8266.c
-	packages/at_device-latest/class/esp8266/at_device_esp8266.c
+	rt-thread/components/net/at/src/at_client.c
 	packages/at_device-latest/src/at_device.c
+	packages/at_device-latest/class/esp8266/at_device_esp8266.c
+	packages/at_device-latest/class/esp8266/at_socket_esp8266.c
+	packages/at_device-latest/samples/at_sample_esp8266.c
 	rt-thread/components/libc/compilers/common/cctype.c
 	rt-thread/components/libc/compilers/common/cstdlib.c
 	rt-thread/components/libc/compilers/common/cstring.c
@@ -127,9 +129,9 @@ SET(PROJECT_SOURCES
 	rt-thread/components/dfs/dfs_v1/src/dfs_fs.c
 	rt-thread/components/dfs/dfs_v1/src/dfs_posix.c
 	rt-thread/components/finsh/msh_file.c
+	rt-thread/components/finsh/msh.c
 	rt-thread/components/finsh/cmd.c
 	rt-thread/components/finsh/msh_parse.c
-	rt-thread/components/finsh/msh.c
 	rt-thread/components/finsh/shell.c
 	rt-thread/src/clock.c
 	rt-thread/src/components.c
@@ -143,35 +145,43 @@ SET(PROJECT_SOURCES
 	rt-thread/src/scheduler_up.c
 	rt-thread/src/thread.c
 	rt-thread/src/timer.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_usart.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc_ex.c
-	libraries/STM32L4xx_HAL/CMSIS/Device/ST/STM32L4xx/Source/Templates/system_stm32l4xx.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cryp.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_comp.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rng.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_usart_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_lptim.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cryp_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi_ex.c
-	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc_ex.c
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cryp_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_comp.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_qspi.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_crc.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cryp.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c
+	libraries/STM32L4xx_HAL/CMSIS/Device/ST/STM32L4xx/Source/Templates/system_stm32l4xx.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_lptim.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rng.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_usart.c
+	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi_ex.c
 	rt-thread/components/libc/posix/io/poll/poll.c
 	rt-thread/components/libc/posix/io/poll/select.c
+	packages/rc522-v1.4.10/src/mfrc522.c
+	packages/rc522-v1.4.10/port/mfrc522_rtt_port.c
+	packages/rc522-v1.4.10/examples/mifare_classic_value_block.c
+	packages/rc522-v1.4.10/examples/change_uid.c
+	packages/rc522-v1.4.10/examples/read_nuid.c
+	packages/rc522-v1.4.10/examples/firmware_check.c
+	packages/rc522-v1.4.10/examples/fix_brickeduid.c
+	packages/rc522-v1.4.10/examples/dunp_info.c
 	rt-thread/components/net/netdev/src/netdev.c
 	rt-thread/components/net/netdev/src/netdev_ipaddr.c
 	rt-thread/components/net/sal/dfs_net/dfs_net.c
@@ -181,6 +191,15 @@ SET(PROJECT_SOURCES
 	rt-thread/components/net/sal/src/sal_socket.c
 	packages/tencent-iot-sdk-latest/samples/data_template/data_template_sample.c
 	packages/tencent-iot-sdk-latest/samples/scenarized/light_data_template_sample.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_json.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_subscribe.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_getopt.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/json_token.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_common.c
+	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_TCP_rtthread.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_hmac.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_aciton.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_net.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/json_parser.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_ringbuff.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client.c
@@ -208,15 +227,6 @@ SET(PROJECT_SOURCES
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_list.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_common.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/network/tls/network_tls.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_json.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_subscribe.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_getopt.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/json_token.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_common.c
-	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_TCP_rtthread.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_hmac.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_aciton.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_net.c
 )
 
 LINK_DIRECTORIES(
