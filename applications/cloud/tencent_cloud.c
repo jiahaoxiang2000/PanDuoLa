@@ -13,10 +13,17 @@
 #include "json_parser.h"
 #include "drivers/pin.h"
 #include "drv_gpio.h"
+#include "mfrc522.h"
 
 
 #define DATA_TEMPLATE_THREAD_STACK_SIZE 6144
 #define YEILD_THREAD_STACK_SIZE     4096
+
+static MIFARE_Key key;
+static Uid *uid;
+
+// Init array that will store new NUID
+static byte nuidPICC[4];
 
 static uint8_t running_state = 0;
 #ifdef AUTH_MODE_CERT
@@ -199,6 +206,13 @@ static void event_handler(void *pclient, void *handle_context, MQTTEventMsg *msg
 /*add user init code, like sensor init*/
 static void _usr_init(void) {
     Log_d("add your init code here");
+    MFRC522(MFRC522_SS_PIN, MFRC522_RST_PIN);
+    PCD_Init(); // Init MFRC522
+    uid = get_uid();
+
+    for (byte i = 0; i < 6; i++) {
+        key.keyByte[i] = 0xFF;
+    }
 }
 
 // Setup MQTT construct parameters
@@ -306,9 +320,28 @@ static void deal_down_stream_user_logic(void *client, ProductDataDefine *pData) 
 
 }
 
+
 /*get local property data, like sensor data*/
 static void _refresh_local_property(void) {
     //add your local property refresh logic
+    if (!PICC_IsNewCardPresent() || !PICC_ReadCardSerial()) {
+        rt_thread_mdelay(50);
+        return;
+    }
+
+    if (uid->uidByte[0] != nuidPICC[0] ||
+        uid->uidByte[1] != nuidPICC[1] ||
+        uid->uidByte[2] != nuidPICC[2] ||
+        uid->uidByte[3] != nuidPICC[3]) {
+        rt_kprintf("A new card has been detected.\n");
+        // Store NUID into nuidPICC array
+        for (byte i = 0; i < 4; i++) {
+            nuidPICC[i] = uid->uidByte[i];
+        }
+        rt_snprintf(sg_DataTemplate[1].data_property.data, sg_DataTemplate[1].data_property.data_buff_len, "%x%x%x%x",
+                    nuidPICC[0], nuidPICC[1], nuidPICC[2], nuidPICC[3]);
+        sg_DataTemplate[1].state = eCHANGED;
+    }
 }
 
 /*find propery need report*/
@@ -512,6 +545,12 @@ static int data_template_thread(void) {
 #endif
     rc = IOT_Template_Destroy(client);
     running_state = 0;
+
+    // Halt PICC
+    PICC_HaltA();
+    // Stop encryption on PCD
+    PCD_StopCrypto1();
+    PCD_End();
 
     return rc;
 }

@@ -21,14 +21,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="add rc522 support&#10;&#10;add rc522 sample and driver code, use Spi2 , PB11 CS Pin,PB12 RST Pin, PB13 SCK,PB14 SPI_MISO,PB15 SPI_MOSI">
-      <change afterPath="$PROJECT_DIR$/applications/cloud/SConscript" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/applications/cloud/data_config.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/applications/cloud/tencent_cloud.c" afterDir="false" />
+    <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="Add cloud module to project&#10;&#10;Added support for 'cloud' to the user project, to enable cloud related functionalities. The makefile (`CMakeLists.txt`) and the source code (`applications/main.c`) have been updated with the new `cloud` module. Along with the addition of the 'cloud' folder which contains 'tencent_cloud.c'  that connects the project with the Tencent cloud. In `tencent_cloud.c`, The Tencent cloud related functionalities, mostly MQTT services, are added for operations on the cloud. Also, new properties and events for the Tencent cloud were set-up in 'data_config.c'.&#10;The update also included the organization of other files in the project for cleaner code.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/applications/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rtconfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/rtconfig.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/applications/cloud/tencent_cloud.c" beforeDir="false" afterPath="$PROJECT_DIR$/applications/cloud/tencent_cloud.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +140,7 @@
       <workItem from="1696638528659" duration="12473000" />
       <workItem from="1697266591614" duration="2401000" />
       <workItem from="1697285069562" duration="17258000" />
-      <workItem from="1697342874572" duration="19875000" />
+      <workItem from="1697342874572" duration="21462000" />
     </task>
     <task id="LOCAL-00001" summary="Add vcs.xml and modify main() function&#10;&#10;Added a vcs.xml file for version control mappings. Refactored main() function in main.c to enhance readability and added functionality to blink Red and Green LEDs.&#10;&#10;The vcs.xml was necessary to handle version control system mappings and enable the use of Git. With respect to the edits in main.c, indentation style has been changed to improve code clarity. Also, added code segments to enable blinking of Red and Green LEDs along with the existing Blue LED, thereby making better use of the RGB LED module.">
       <option name="closed" value="true" />
@@ -259,7 +254,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697293724770</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Add cloud module to project&#10;&#10;Added support for 'cloud' to the user project, to enable cloud related functionalities. The makefile (`CMakeLists.txt`) and the source code (`applications/main.c`) have been updated with the new `cloud` module. Along with the addition of the 'cloud' folder which contains 'tencent_cloud.c'  that connects the project with the Tencent cloud. In `tencent_cloud.c`, The Tencent cloud related functionalities, mostly MQTT services, are added for operations on the cloud. Also, new properties and events for the Tencent cloud were set-up in 'data_config.c'.&#10;The update also included the organization of other files in the project for cleaner code.">
+      <option name="closed" value="true" />
+      <created>1697373173193</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1697373173193</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,7 +310,8 @@
     <MESSAGE value="Enable AT communication and other network configurations&#10;&#10;Enabled the use of 'System Work Queue', 'Software Layer(AT)', and Net Device in RT-Thread configuration. Enabled ESP8266 AT device for WiFi communication and set related configs. Updated include directories and the source files in the CMakeLists. Made corresponding header file changes. &#10;&#10;These changes were needed to include AT commands and configure network communication in the RT-Thread real-time operating system. Now the system can use AT commands to communicate with the WiFi module ESP8266 and perform related network tasks." />
     <MESSAGE value="change environment to linux for development" />
     <MESSAGE value="add rc522 support&#10;&#10;add rc522 sample and driver code, use Spi2 , PB11 CS Pin,PB12 RST Pin, PB13 SCK,PB14 SPI_MISO,PB15 SPI_MOSI" />
-    <option name="LAST_COMMIT_MESSAGE" value="add rc522 support&#10;&#10;add rc522 sample and driver code, use Spi2 , PB11 CS Pin,PB12 RST Pin, PB13 SCK,PB14 SPI_MISO,PB15 SPI_MOSI" />
+    <MESSAGE value="Add cloud module to project&#10;&#10;Added support for 'cloud' to the user project, to enable cloud related functionalities. The makefile (`CMakeLists.txt`) and the source code (`applications/main.c`) have been updated with the new `cloud` module. Along with the addition of the 'cloud' folder which contains 'tencent_cloud.c'  that connects the project with the Tencent cloud. In `tencent_cloud.c`, The Tencent cloud related functionalities, mostly MQTT services, are added for operations on the cloud. Also, new properties and events for the Tencent cloud were set-up in 'data_config.c'.&#10;The update also included the organization of other files in the project for cleaner code." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add cloud module to project&#10;&#10;Added support for 'cloud' to the user project, to enable cloud related functionalities. The makefile (`CMakeLists.txt`) and the source code (`applications/main.c`) have been updated with the new `cloud` module. Along with the addition of the 'cloud' folder which contains 'tencent_cloud.c'  that connects the project with the Tencent cloud. In `tencent_cloud.c`, The Tencent cloud related functionalities, mostly MQTT services, are added for operations on the cloud. Also, new properties and events for the Tencent cloud were set-up in 'data_config.c'.&#10;The update also included the organization of other files in the project for cleaner code." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
