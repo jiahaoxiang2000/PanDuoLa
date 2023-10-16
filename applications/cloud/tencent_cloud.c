@@ -14,6 +14,7 @@
 #include "drivers/pin.h"
 #include "drv_gpio.h"
 #include "mfrc522.h"
+#include "drv_lcd.h"
 
 
 #define DATA_TEMPLATE_THREAD_STACK_SIZE 6144
@@ -24,6 +25,9 @@ static Uid *uid;
 
 // Init array that will store new NUID
 static byte nuidPICC[4];
+
+
+#define LED0_PIN    GET_PIN(E, 7)
 
 static uint8_t running_state = 0;
 #ifdef AUTH_MODE_CERT
@@ -205,7 +209,10 @@ static void event_handler(void *pclient, void *handle_context, MQTTEventMsg *msg
 
 /*add user init code, like sensor init*/
 static void _usr_init(void) {
-    Log_d("add your init code here");
+
+    /* set LED0 pin mode to output */
+    rt_pin_mode(LED0_PIN, PIN_MODE_OUTPUT);
+
     MFRC522(MFRC522_SS_PIN, MFRC522_RST_PIN);
     PCD_Init(); // Init MFRC522
     uid = get_uid();
@@ -298,7 +305,7 @@ static int _register_data_template_property(void *pTemplate_client) {
     return QCLOUD_RET_SUCCESS;
 }
 
-#define LED0_PIN    GET_PIN(E, 7)
+
 
 // when control msg received, data_template's properties has been parsed in pData
 // you should add your logic how to use pData
@@ -341,6 +348,12 @@ static void _refresh_local_property(void) {
         rt_snprintf(sg_DataTemplate[1].data_property.data, sg_DataTemplate[1].data_property.data_buff_len, "%x%x%x%x",
                     nuidPICC[0], nuidPICC[1], nuidPICC[2], nuidPICC[3]);
         sg_DataTemplate[1].state = eCHANGED;
+
+        // show id card information on lcd
+        lcd_clear(BLACK);
+        lcd_set_color(BLACK, WHITE);
+        lcd_show_string(10, 10, 24, "Welcome to Home!");
+        lcd_show_string(10, 60, 32, "UID:%s",sg_DataTemplate[1].data_property.data);
     }
 }
 

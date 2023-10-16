@@ -21,9 +21,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="Add cloud module to project&#10;&#10;Added support for 'cloud' to the user project, to enable cloud related functionalities. The makefile (`CMakeLists.txt`) and the source code (`applications/main.c`) have been updated with the new `cloud` module. Along with the addition of the 'cloud' folder which contains 'tencent_cloud.c'  that connects the project with the Tencent cloud. In `tencent_cloud.c`, The Tencent cloud related functionalities, mostly MQTT services, are added for operations on the cloud. Also, new properties and events for the Tencent cloud were set-up in 'data_config.c'.&#10;The update also included the organization of other files in the project for cleaner code.">
+    <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="Add RFID functionality to cloud module&#10;&#10;The RFID functionality has been added to the tencent_cloud.c cloud module in our IoT application for efficient inventory management. The MFRC522 library is used for RFID, and utility functions have been written to initialize and operate RFID hardware. This new functionality enables our IoT application to detect a new card, store its NUID and refresh local property. These changes provide the ability to uniquely identify IoT devices through cards, essential for inventory management and device tracking.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/applications/cloud/tencent_cloud.c" beforeDir="false" afterPath="$PROJECT_DIR$/applications/cloud/tencent_cloud.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/applications/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/applications/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rtconfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/rtconfig.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,28 +69,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.advertisement.text.has.clang-format": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "/home/xjh/CLionProjects/PanDuoLa/applications/cloud",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/xjh/CLionProjects/PanDuoLa/applications/cloud&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/applications/cloud" />
@@ -99,11 +101,6 @@
     </key>
   </component>
   <component name="RunManager" selected="OpenOCD Download &amp; Run.rtthread.elf">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="rtthread.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="rtthread" TARGET_NAME="rtthread.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="rtthread" RUN_TARGET_NAME="rtthread.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -140,7 +137,8 @@
       <workItem from="1696638528659" duration="12473000" />
       <workItem from="1697266591614" duration="2401000" />
       <workItem from="1697285069562" duration="17258000" />
-      <workItem from="1697342874572" duration="21462000" />
+      <workItem from="1697342874572" duration="23419000" />
+      <workItem from="1697438524851" duration="1025000" />
     </task>
     <task id="LOCAL-00001" summary="Add vcs.xml and modify main() function&#10;&#10;Added a vcs.xml file for version control mappings. Refactored main() function in main.c to enhance readability and added functionality to blink Red and Green LEDs.&#10;&#10;The vcs.xml was necessary to handle version control system mappings and enable the use of Git. With respect to the edits in main.c, indentation style has been changed to improve code clarity. Also, added code segments to enable blinking of Red and Green LEDs along with the existing Blue LED, thereby making better use of the RGB LED module.">
       <option name="closed" value="true" />
@@ -262,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697373173193</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Add RFID functionality to cloud module&#10;&#10;The RFID functionality has been added to the tencent_cloud.c cloud module in our IoT application for efficient inventory management. The MFRC522 library is used for RFID, and utility functions have been written to initialize and operate RFID hardware. This new functionality enables our IoT application to detect a new card, store its NUID and refresh local property. These changes provide the ability to uniquely identify IoT devices through cards, essential for inventory management and device tracking.">
+      <option name="closed" value="true" />
+      <created>1697376340649</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1697376340649</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,7 +317,8 @@
     <MESSAGE value="change environment to linux for development" />
     <MESSAGE value="add rc522 support&#10;&#10;add rc522 sample and driver code, use Spi2 , PB11 CS Pin,PB12 RST Pin, PB13 SCK,PB14 SPI_MISO,PB15 SPI_MOSI" />
     <MESSAGE value="Add cloud module to project&#10;&#10;Added support for 'cloud' to the user project, to enable cloud related functionalities. The makefile (`CMakeLists.txt`) and the source code (`applications/main.c`) have been updated with the new `cloud` module. Along with the addition of the 'cloud' folder which contains 'tencent_cloud.c'  that connects the project with the Tencent cloud. In `tencent_cloud.c`, The Tencent cloud related functionalities, mostly MQTT services, are added for operations on the cloud. Also, new properties and events for the Tencent cloud were set-up in 'data_config.c'.&#10;The update also included the organization of other files in the project for cleaner code." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add cloud module to project&#10;&#10;Added support for 'cloud' to the user project, to enable cloud related functionalities. The makefile (`CMakeLists.txt`) and the source code (`applications/main.c`) have been updated with the new `cloud` module. Along with the addition of the 'cloud' folder which contains 'tencent_cloud.c'  that connects the project with the Tencent cloud. In `tencent_cloud.c`, The Tencent cloud related functionalities, mostly MQTT services, are added for operations on the cloud. Also, new properties and events for the Tencent cloud were set-up in 'data_config.c'.&#10;The update also included the organization of other files in the project for cleaner code." />
+    <MESSAGE value="Add RFID functionality to cloud module&#10;&#10;The RFID functionality has been added to the tencent_cloud.c cloud module in our IoT application for efficient inventory management. The MFRC522 library is used for RFID, and utility functions have been written to initialize and operate RFID hardware. This new functionality enables our IoT application to detect a new card, store its NUID and refresh local property. These changes provide the ability to uniquely identify IoT devices through cards, essential for inventory management and device tracking." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add RFID functionality to cloud module&#10;&#10;The RFID functionality has been added to the tencent_cloud.c cloud module in our IoT application for efficient inventory management. The MFRC522 library is used for RFID, and utility functions have been written to initialize and operate RFID hardware. This new functionality enables our IoT application to detect a new card, store its NUID and refresh local property. These changes provide the ability to uniquely identify IoT devices through cards, essential for inventory management and device tracking." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

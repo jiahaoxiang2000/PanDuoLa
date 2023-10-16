@@ -17,12 +17,8 @@
 #define LED0_PIN    GET_PIN(E, 7)
 
 int main(void) {
-    /* set LED0 pin mode to output */
-    rt_pin_mode(LED0_PIN, PIN_MODE_OUTPUT);
 
-    lcd_clear(WHITE);
-    lcd_set_color(WHITE, BLACK);
-    lcd_show_string(10, 69, 32, "Hello, Xjh!");
+
 
     while (1) {
         rt_thread_mdelay(500);
