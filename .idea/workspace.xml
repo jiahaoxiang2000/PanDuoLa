@@ -22,10 +22,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="866aa8ed-c0fb-4b5a-a341-a014b80368d3" name="Changes" comment="Add RFID functionality to cloud module&#10;&#10;The RFID functionality has been added to the tencent_cloud.c cloud module in our IoT application for efficient inventory management. The MFRC522 library is used for RFID, and utility functions have been written to initialize and operate RFID hardware. This new functionality enables our IoT application to detect a new card, store its NUID and refresh local property. These changes provide the ability to uniquely identify IoT devices through cards, essential for inventory management and device tracking.">
+      <change afterPath="$PROJECT_DIR$/.idea/PanDuoLa.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/applications/ic_card_cipher.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.config" beforeDir="false" afterPath="$PROJECT_DIR$/.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/cloud/tencent_cloud.c" beforeDir="false" afterPath="$PROJECT_DIR$/applications/cloud/tencent_cloud.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/applications/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rtconfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/rtconfig.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/applications/SConscript" beforeDir="false" afterPath="$PROJECT_DIR$/applications/SConscript" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,19 +77,20 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;cf.advertisement.text.has.clang-format&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/xjh/CLionProjects/PanDuoLa/applications/cloud&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/CodeSpcase/CLionProject/PanDuoLa&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -139,6 +143,9 @@
       <workItem from="1697285069562" duration="17258000" />
       <workItem from="1697342874572" duration="23419000" />
       <workItem from="1697438524851" duration="1025000" />
+      <workItem from="1698108833828" duration="4722000" />
+      <workItem from="1698189535588" duration="493000" />
+      <workItem from="1698190045899" duration="1000" />
     </task>
     <task id="LOCAL-00001" summary="Add vcs.xml and modify main() function&#10;&#10;Added a vcs.xml file for version control mappings. Refactored main() function in main.c to enhance readability and added functionality to blink Red and Green LEDs.&#10;&#10;The vcs.xml was necessary to handle version control system mappings and enable the use of Git. With respect to the edits in main.c, indentation style has been changed to improve code clarity. Also, added code segments to enable blinking of Red and Green LEDs along with the existing Blue LED, thereby making better use of the RGB LED module.">
       <option name="closed" value="true" />
