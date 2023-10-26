@@ -84,14 +84,16 @@ SET(PROJECT_SOURCES
 	applications/cloud/tencent_cloud.c
 	applications/ic_card_cipher.c
 	applications/main.c
+	applications/nrf24l01_init.c
+	applications/star.c
+	rt-thread/components/net/at/at_socket/at_socket.c
+	rt-thread/components/net/at/src/at_cli.c
 	rt-thread/components/net/at/src/at_client.c
 	rt-thread/components/net/at/src/at_utils.c
-	rt-thread/components/net/at/src/at_cli.c
-	rt-thread/components/net/at/at_socket/at_socket.c
-	packages/at_device-latest/class/esp8266/at_device_esp8266.c
 	packages/at_device-latest/src/at_device.c
 	packages/at_device-latest/samples/at_sample_esp8266.c
 	packages/at_device-latest/class/esp8266/at_socket_esp8266.c
+	packages/at_device-latest/class/esp8266/at_device_esp8266.c
 	rt-thread/components/libc/compilers/common/cctype.c
 	rt-thread/components/libc/compilers/common/cstdlib.c
 	rt-thread/components/libc/compilers/common/cstring.c
@@ -178,14 +180,14 @@ SET(PROJECT_SOURCES
 	libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
 	rt-thread/components/libc/posix/io/poll/poll.c
 	rt-thread/components/libc/posix/io/poll/select.c
-	packages/rc522-v1.4.10/examples/fix_brickeduid.c
 	packages/rc522-v1.4.10/examples/dunp_info.c
-	packages/rc522-v1.4.10/examples/read_nuid.c
+	packages/rc522-v1.4.10/src/mfrc522.c
 	packages/rc522-v1.4.10/port/mfrc522_rtt_port.c
 	packages/rc522-v1.4.10/examples/change_uid.c
-	packages/rc522-v1.4.10/examples/mifare_classic_value_block.c
-	packages/rc522-v1.4.10/src/mfrc522.c
 	packages/rc522-v1.4.10/examples/firmware_check.c
+	packages/rc522-v1.4.10/examples/mifare_classic_value_block.c
+	packages/rc522-v1.4.10/examples/fix_brickeduid.c
+	packages/rc522-v1.4.10/examples/read_nuid.c
 	rt-thread/components/net/netdev/src/netdev.c
 	rt-thread/components/net/netdev/src/netdev_ipaddr.c
 	rt-thread/components/net/sal/dfs_net/dfs_net.c
@@ -195,42 +197,42 @@ SET(PROJECT_SOURCES
 	rt-thread/components/net/sal/src/sal_socket.c
 	packages/tencent-iot-sdk-latest/samples/data_template/data_template_sample.c
 	packages/tencent-iot-sdk-latest/samples/scenarized/light_data_template_sample.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/qcloud_iot_device.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_list.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_yield.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/network/tls/network_tls.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_aciton.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/json_parser.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/network/network_interface.c
-	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_Device_rtthread.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_common.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_hmac.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_md5.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/json_token.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_subscribe.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_event.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_publish.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_getopt.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/network/socket/network_socket.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_net.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_aes.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_timer.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_ringbuff.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/qcloud_iot_ca.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_unsubscribe.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_base64.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/string_utils.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_sha1.c
-	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_OS_rtthread.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/qcloud_iot_log.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_json.c
-	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_Timer_rtthread.c
-	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_common.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/json_parser.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_connect.c
 	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_manager.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_aes.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/network/tls/network_tls.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_publish.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_hmac.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/network/network_interface.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_base64.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_timer.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_common.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_unsubscribe.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client_json.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_getopt.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_yield.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_md5.c
+	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_OS_rtthread.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/network/socket/network_socket.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_event.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_list.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/qcloud_iot_log.c
+	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_Timer_rtthread.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_net.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_ringbuff.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_client.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/qcloud_iot_ca.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_common.c
 	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_TCP_rtthread.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/json_token.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/qcloud_iot_device.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/utils/utils_sha1.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/protocol/mqtt/mqtt_client_subscribe.c
+	packages/tencent-iot-sdk-latest/ports/rtthread/HAL_Device_rtthread.c
+	packages/tencent-iot-sdk-latest/qcloud-iot-explorer-sdk-embedded-c/sdk_src/services/data_template/data_template_aciton.c
 )
 
 LINK_DIRECTORIES(

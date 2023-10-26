@@ -3,7 +3,7 @@ import os
 
 cwd = GetCurrentDir()
 CPPPATH = [cwd]
-src = ['main.c','ic_card_cipher.c']
+src = Glob('*.c')
 
 if GetDepend(['PKG_USING_RTDUINO']) and not GetDepend(['RTDUINO_NO_SETUP_LOOP']):
     src += ['arduino_main.cpp']

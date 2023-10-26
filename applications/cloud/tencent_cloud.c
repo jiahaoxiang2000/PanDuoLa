@@ -561,7 +561,7 @@ static int data_template_thread(void) {
 
     // Halt PICC
     PICC_HaltA();
-    // Stop encryption on PCD
+    // Stop palintext on PCD
     PCD_StopCrypto1();
     PCD_End();
 
