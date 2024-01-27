@@ -20,12 +20,16 @@
 static int lcd_sample(void)
 {
     lcd_clear(WHITE);
-    lcd_show_image(0, 0, 240, 69, image_rttlogo);
+    // lcd_show_image(0, 0, 240, 69, image_rttlogo);
     lcd_set_color(WHITE, BLACK);
-    lcd_show_string(10, 69, 24, "Hello, RT-Thread!");
-    lcd_draw_line(0, 69+24, 240, 69+24);
+    lcd_show_string(0, 10, 24, "temperature:");
+    lcd_show_string(0, 10 + 24, 24, "000000000000000f");
+    lcd_show_string(0, 10 + 24 * 3, 24, "ciphertext:");
+    lcd_draw_line(0, 10 + 24 * 3, 240, 10 + 24 * 3);
+    lcd_show_string(0, 10 + 24 * 4, 24, "e61ca7a230dddaff");
+    lcd_draw_line(0, 10 + 24 * 6, 240, 10 + 24 * 6);
 #ifdef BSP_USING_LCD_QRCODE
-    lcd_show_qrcode(54, 69+24+6, 4, ECC_LOW, "https://www.rt-thread.org/", 4);
+    lcd_show_qrcode(54, 69 + 24 + 6, 4, ECC_LOW, "https://www.rt-thread.org/", 4);
 #endif /* BSP_USING_LCD_QRCODE */
 
     return RT_EOK;
