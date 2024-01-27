@@ -75,14 +75,6 @@
 
 /* DFS: device virtual file system */
 
-#define RT_USING_DFS
-#define DFS_USING_POSIX
-#define DFS_USING_WORKDIR
-#define DFS_FD_MAX 16
-#define RT_USING_DFS_V1
-#define DFS_FILESYSTEMS_MAX 4
-#define DFS_FILESYSTEM_TYPES_MAX 4
-#define RT_USING_DFS_DEVFS
 
 /* Device Drivers */
 
@@ -115,10 +107,6 @@
 
 /* POSIX (Portable Operating System Interface) layer */
 
-#define RT_USING_POSIX_FS
-#define RT_USING_POSIX_POLL
-#define RT_USING_POSIX_SELECT
-#define RT_USING_POSIX_SOCKET
 
 /* Interprocess Communication (IPC) */
 
@@ -128,27 +116,6 @@
 
 /* Network */
 
-#define RT_USING_SAL
-#define SAL_INTERNET_CHECK
-
-/* Docking with protocol stacks */
-
-#define SAL_USING_AT
-#define SAL_USING_POSIX
-#define RT_USING_NETDEV
-#define NETDEV_USING_IFCONFIG
-#define NETDEV_USING_PING
-#define NETDEV_USING_NETSTAT
-#define NETDEV_USING_AUTO_DEFAULT
-#define NETDEV_IPV4 1
-#define NETDEV_IPV6 0
-#define RT_USING_AT
-#define AT_USING_CLIENT
-#define AT_CLIENT_NUM_MAX 1
-#define AT_USING_SOCKET
-#define AT_USING_CLI
-#define AT_CMD_MAX_LEN 128
-#define AT_SW_VERSION_NUM 0x10301
 
 /* Utilities */
 
@@ -168,26 +135,15 @@
 
 /* CYW43012 WiFi */
 
-#define PKG_USING_AT_DEVICE
-#define AT_DEVICE_USING_ESP8266
-#define AT_DEVICE_ESP8266_SOCKET
-#define AT_DEVICE_ESP8266_SAMPLE
-#define ESP8266_SAMPLE_WIFI_SSID "hotspot"
-#define ESP8266_SAMPLE_WIFI_PASSWORD "201007xjh"
-#define ESP8266_SAMPLE_CLIENT_NAME "uart2"
-#define ESP8266_SAMPLE_RECV_BUFF_LEN 512
-#define PKG_USING_AT_DEVICE_LATEST_VERSION
-#define PKG_AT_DEVICE_VER_NUM 0x99999
+
+/* BL808 WiFi */
+
+
+/* CYW43439 WiFi */
+
 
 /* IoT Cloud */
 
-#define PKG_USING_TENCENT_IOT_EXPLORER
-#define PKG_USING_TENCENT_IOT_EXPLORER_PRODUCT_ID "6YLIQALUFQ"
-#define PKG_USING_TENCENT_IOT_EXPLORER_DEVICE_NAME "test0"
-#define PKG_USING_TENCENT_IOT_EXPLORER_DEVICE_SECRET "x0WRPb2gqKp25+ZZezO5dA=="
-#define PKG_USING_DATA_TEMPLATE_PROTOCOL
-#define PKG_USING_SMART_LIGHT_SAMPLE
-#define PKG_USING_TENCENT_IOT_EXPLORER_LATEST_VERSION
 
 /* security packages */
 
@@ -235,19 +191,6 @@
 
 /* Kendryte SDK */
 
-#define PKG_USING_RC522
-#define MFRC522_SPI_BUS_NAME "spi2"
-#define MFRC522_SPI_DEVICE_NAME "spi20"
-
-/* Notice: PH3 --> 115 */
-
-#define MFRC522_SS_PIN 27
-
-/* Notice: PH8 --> 120 */
-
-#define MFRC522_RST_PIN 28
-#define PKG_USING_RC522_SAMPLE
-#define PKG_USING_RC522_V10410
 
 /* AI packages */
 
@@ -312,17 +255,14 @@
 
 #define BSP_USING_STLINK_TO_USART
 #define BSP_USING_SPI_LCD
+#define BSP_USING_LCD_SAMPLE
 
 /* On-chip Peripheral Drivers */
 
 #define BSP_USING_GPIO
 #define BSP_USING_UART
 #define BSP_USING_UART1
-#define BSP_USING_UART2
-#define BSP_UART2_RX_USING_DMA
-#define BSP_UART2_TX_USING_DMA
 #define BSP_USING_SPI
-#define BSP_USING_SPI2
 #define BSP_USING_SPI3
 #define BSP_SPI3_TX_USING_DMA
 #define BSP_USING_PWM
