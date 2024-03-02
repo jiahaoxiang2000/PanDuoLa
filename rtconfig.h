@@ -254,8 +254,6 @@
 /* Onboard Peripheral Drivers */
 
 #define BSP_USING_STLINK_TO_USART
-#define BSP_USING_SPI_LCD
-#define BSP_USING_LCD_SAMPLE
 
 /* On-chip Peripheral Drivers */
 
