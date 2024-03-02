@@ -11,14 +11,15 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 #include <board.h>
-#include <stdio.h>
 
 /* defined the LED0 pin: PE7 */
-#define LED0_PIN    GET_PIN(E, 7)
+#define LED0_PIN GET_PIN(E, 7)
 
-int main(void) {
+int main(void)
+{
 
-    while (1) {
+    while (1)
+    {
         rt_thread_mdelay(500);
     }
 }
