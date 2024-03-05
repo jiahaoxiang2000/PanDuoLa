@@ -3,8 +3,14 @@
 #include <stm32l4xx.h>
 #include <stdio.h>
 
-static uint32_t a;
+// initial data
+static uint64_t P = 0x0000000000000000;
+static uint64_t K0 = 0x0123456789ABCDEF, K1 = 0xFEDCBA9876543210;
+static uint64_t T0 = 0x7E5C3A18F6D4B290, T1 = 0x1EB852FC9630DA74;
+static uint64_t W0, W1;
+static uint8_t r = 5; // the number of rounds
 
+// cipher constants
 static uint8_t tau[16] = {0, 11, 6, 13, 10, 1, 12, 7, 5, 14, 3, 8, 15, 4, 9, 2};
 static uint8_t tau_f[16] = {1, 10, 14, 6, 2, 9, 13, 5, 0, 8, 12, 4, 3, 11, 15, 7};
 
@@ -97,7 +103,7 @@ void int_to_4bit_list(uint64_t input, uint8_t output[16])
 }
 
 // pass
-void bit_list_to_int(uint8_t input[16], uint64_t* output)
+void bit_list_to_int(uint8_t input[16], uint64_t *output)
 {
     *output = 0;
     for (int i = 0; i < 16; i++)
@@ -106,12 +112,119 @@ void bit_list_to_int(uint8_t input[16], uint64_t* output)
     }
 }
 
+void qarmav2_enc_64_128(uint64_t P, uint64_t K0, uint64_t K1, uint64_t T0, uint64_t T1, uint64_t *C)
+{
+    uint8_t temp0[16];
 
-static uint64_t P = 0x0000000000000000;
-static uint64_t K0 = 0x0123456789ABCDEF, K1 = 0xFEDCBA9876543210;
-static uint64_t T0 = 0x7E5C3A18F6D4B290, T1 = 0x1EB852FC9630DA74;
-static uint64_t W0, W1;
-static uint8_t r = 5;
+    W0 = o_func(o_func(K0, 64), 64);
+    W1 = o_func_inverse(o_func_inverse(K1, 64), 64);
+
+    int_to_4bit_list(T0, temp0);
+    for (size_t i = 0; i < r - 1; i++)
+    {
+        permutation(temp0, tau_f);
+    }
+    bit_list_to_int(temp0, &T0);
+
+    uint64_t t0 = T0, t1 = T1, k0 = K0, k1 = K1;
+    uint8_t state_l[16];
+    uint64_t state;
+    uint64_t cs[6] = {0, 0, 0x243f6a8885a308d3, 0x3b92eeee967a1ffd, 0x5370afe1b69dc900, 0x134c3e4b47a1b8f1};
+    uint64_t alpha = 0x13198A2E03707344;
+    uint64_t beta = 0x249ea1b3c5118ce3;
+
+    int_to_4bit_list(P ^ k0, state_l);
+    s_box(state_l, S);
+
+    // forward function
+    for (size_t i = 1; i < r + 1; i++)
+    {
+        bit_list_to_int(state_l, &state);
+
+        if (i % 2 == 1)
+        {
+            state = state ^ k1 ^ t1;
+        }
+        else
+        {
+            state = state ^ k0 ^ t0;
+        }
+
+        state = state ^ cs[i];
+
+        int_to_4bit_list(state, state_l);
+        permutation(state_l, tau);
+        mix_column(state_l);
+        s_box(state_l, S);
+
+        if (i % 2 == 1)
+        {
+            int_to_4bit_list(t1, temp0);
+            permutation(temp0, tau_f);
+            bit_list_to_int(temp0, &t1);
+        }
+        else
+        {
+            int_to_4bit_list(t0, temp0);
+            permutation(temp0, tau_f_inverse);
+            bit_list_to_int(temp0, &t0);
+        }
+    }
+
+    // middle part
+    k0 = o_func(k0, 64) ^ alpha;
+    k1 = o_func_inverse(k1, 64) ^ beta;
+
+    permutation(state_l, tau);
+    bit_list_to_int(state_l, &state);
+    state = state ^ W0;
+    int_to_4bit_list(state, state_l);
+    mix_column(state_l);
+    bit_list_to_int(state_l, &state);
+    state = state ^ W1;
+    int_to_4bit_list(state, state_l);
+    permutation(state_l, tau_inverse);
+
+    // backward part
+    for (size_t i = r; i > 0; i--)
+    {
+        s_box(state_l, S_inverse);
+        mix_column(state_l);
+        permutation(state_l, tau_inverse);
+
+        bit_list_to_int(state_l, &state);
+        state = state ^ cs[i];
+        if ((i + 1) % 2)
+        {
+            state = state ^ k1 ^ t1;
+        }
+        else
+        {
+            state = state ^ k0 ^ t0;
+        }
+        int_to_4bit_list(state, state_l);
+
+        if (i > 1 && (i % 2 == 0))
+        {
+            int_to_4bit_list(t1, temp0);
+            permutation(temp0, tau_f);
+            bit_list_to_int(temp0, &t1);
+        }
+        else
+        {
+            int_to_4bit_list(t0, temp0);
+            permutation(temp0, tau_f_inverse);
+            bit_list_to_int(temp0, &t0);
+        }
+    }
+
+    s_box(state_l, S_inverse);
+    bit_list_to_int(state_l, &state);
+    state = state ^ k1;
+    *C = state;
+}
+
+
 
 static void qarma_cipher(int argc, char *argv[])
 {
@@ -127,15 +240,12 @@ static void qarma_cipher(int argc, char *argv[])
     }
     bit_list_to_int(temp0, &T0);
 
-    
-
     uint64_t t0 = T0, t1 = T1, k0 = K0, k1 = K1;
     uint8_t state_l[16];
     uint64_t state;
     uint64_t cs[6] = {0, 0, 0x243f6a8885a308d3, 0x3b92eeee967a1ffd, 0x5370afe1b69dc900, 0x134c3e4b47a1b8f1};
     uint64_t alpha = 0x13198A2E03707344;
     uint64_t beta = 0x249ea1b3c5118ce3;
-
 
     uint32_t start, end, elapsed;
     start = SysTick->VAL;
@@ -149,7 +259,7 @@ static void qarma_cipher(int argc, char *argv[])
     for (size_t i = 1; i < r + 1; i++)
     {
         bit_list_to_int(state_l, &state);
-        
+
         if (i % 2 == 1)
         {
             state = state ^ k1 ^ t1;
@@ -158,9 +268,9 @@ static void qarma_cipher(int argc, char *argv[])
         {
             state = state ^ k0 ^ t0;
         }
-         
+
         state = state ^ cs[i];
-        
+
         int_to_4bit_list(state, state_l);
         permutation(state_l, tau);
         mix_column(state_l);
