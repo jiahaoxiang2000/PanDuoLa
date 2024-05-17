@@ -1,0 +1,3 @@
+[submodule "qarmav2-py"]
+	path = qarmav2-py
+	url = git@github.com:jiahaoxiang2000/qarma-py.git
