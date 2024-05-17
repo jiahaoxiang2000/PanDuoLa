@@ -224,8 +224,6 @@ void qarmav2_enc_64_128(uint64_t P, uint64_t K0, uint64_t K1, uint64_t T0, uint6
     *C = state;
 }
 
-
-
 static void qarma_cipher(int argc, char *argv[])
 {
     uint8_t temp0[16];
@@ -233,6 +231,7 @@ static void qarma_cipher(int argc, char *argv[])
     W0 = o_func(o_func(K0, 64), 64);
     W1 = o_func_inverse(o_func_inverse(K1, 64), 64);
 
+    // update the tweak key by the tau_f permutation
     int_to_4bit_list(T0, temp0);
     for (size_t i = 0; i < r - 1; i++)
     {
@@ -252,12 +251,14 @@ static void qarma_cipher(int argc, char *argv[])
 
     // Your code Start
 
+    // add the white key to the plaintext
     int_to_4bit_list(P ^ k0, state_l);
     s_box(state_l, S);
 
     // forward function
     for (size_t i = 1; i < r + 1; i++)
     {
+        // add the key and tweak key to the state
         bit_list_to_int(state_l, &state);
 
         if (i % 2 == 1)
@@ -268,14 +269,14 @@ static void qarma_cipher(int argc, char *argv[])
         {
             state = state ^ k0 ^ t0;
         }
-
+        // add the round constant
         state = state ^ cs[i];
-
+        // pass the round function
         int_to_4bit_list(state, state_l);
         permutation(state_l, tau);
         mix_column(state_l);
         s_box(state_l, S);
-
+        // update the tweak key
         if (i % 2 == 1)
         {
             int_to_4bit_list(t1, temp0);
@@ -291,6 +292,8 @@ static void qarma_cipher(int argc, char *argv[])
     }
 
     // middle part
+
+    // update the key for the backward part
     k0 = o_func(k0, 64) ^ alpha;
     k1 = o_func_inverse(k1, 64) ^ beta;
 
@@ -307,12 +310,14 @@ static void qarma_cipher(int argc, char *argv[])
     // backward part
     for (size_t i = r; i > 0; i--)
     {
+        // pass the round function
         s_box(state_l, S_inverse);
         mix_column(state_l);
         permutation(state_l, tau_inverse);
-
+        // add the round constant
         bit_list_to_int(state_l, &state);
         state = state ^ cs[i];
+        // add the key and tweak key to the state
         if ((i + 1) % 2)
         {
             state = state ^ k1 ^ t1;
@@ -322,7 +327,7 @@ static void qarma_cipher(int argc, char *argv[])
             state = state ^ k0 ^ t0;
         }
         int_to_4bit_list(state, state_l);
-
+        // update the tweak key
         if (i > 1 && (i % 2 == 0))
         {
             int_to_4bit_list(t1, temp0);
@@ -339,6 +344,7 @@ static void qarma_cipher(int argc, char *argv[])
 
     s_box(state_l, S_inverse);
     bit_list_to_int(state_l, &state);
+    // add the white key to the ciphertext
     state = state ^ k1;
 
     // Your code End
