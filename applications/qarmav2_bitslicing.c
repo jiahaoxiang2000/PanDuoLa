@@ -44,7 +44,10 @@ static void qarmav2_bitslicing_cipher(int argc, char *argv[])
 
     // Your code End
     end = SysTick->VAL;
-    printf("c %x\n", c);
+    printf("0 %x\n", rs[0]);
+    printf("1 %x\n", rs[1]);
+    printf("2 %x\n", rs[2]);
+    printf("4 %x\n", rs[3]);
     printf("r0 %lx\n", r0);
     elapsed = start > end ? (start - end) : (start + (SysTick->LOAD - end));
     // printf("cipher %llx\n", state);
