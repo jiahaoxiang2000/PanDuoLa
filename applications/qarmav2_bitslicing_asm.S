@@ -4,27 +4,17 @@
 .section .data
 .global rs
 rs:     .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
-shift:  .byte 0, 12, 24, 12, 20, 8, 20, 0, 6, 22, 14, 6, 26, 18, 10, 26
-mask:   .word 0xc0000000, 0x30000000, 0xc000000, 0x3000000, 0xc00000, 0x300000, 0xc0000, 0x30000, 0xc000, 0x3000, 0xc00, 0x300, 0xc0, 0x30, 0xc, 0x3
+
 
 .global qarmav2_bitslicing
 .type qarmav2_bitslicing, %function
 
-@ Define a macro named PPO, which stands for Permutation Primitive Operation.
-@ This macro performs a series of operations on the input and output registers, using a temporary register.
 
-@ Arguments:
-@ dest_r: The output register. The result of the operations will be stored in this register.
-@ src_r: The input register. The operations will be performed on the value in this register.
-@ r3: A temporary register used for intermediate calculations.
-@ rotate_amount: The number of bits to rotate the value in src_r to the right.
-@ mask_value: A value that will be used to mask the result of the rotation.
 .macro PPO, dest_r, src_r, r3, rotate_amount, mask_value
     MOV \r3, \src_r, ROR#\rotate_amount
     AND \r3, \r3, #\mask_value
     ORR \dest_r, \dest_r, \r3
 .endm
-
 
 /**
  * Macro: PPO_TUA
@@ -51,25 +41,31 @@ mask:   .word 0xc0000000, 0x30000000, 0xc000000, 0x3000000, 0xc00000, 0x300000, 
     PPO \dest_r, \src_r, \temp_r, 10, 0xc
 .endm
 
+.macro PERMUTATION_TUA base_r, t1, t2, t3
+    LDR \t2, [\base_r] // Load the first item of rs into r1
+    PPO_TUA \t1, \t2, \t3
+    STR \t1, [\base_r] // Store the value of r1 back into the first item of rs
+
+    LDR \t2, [\base_r, #4] // Load the second item of rs into r1
+    PPO_TUA \t1, \t2, \t3
+    STR \t1, [\base_r, #4] // Store the value of r1 back into the second item of rs
+
+    LDR \t2, [\base_r, #8] // Load the third item of rs into r1
+    PPO_TUA \t1, \t2, \t3
+    STR \t1, [\base_r, #8] // Store the value of r1 back into the third item of rs
+
+    LDR \t2, [\base_r, #12] // Load the fourth item of rs into r1
+    PPO_TUA \t1, \t2, \t3
+    STR \t1, [\base_r, #12] // Store the value of r1 back into the fourth item of rs
+.endm
+
 .text
 qarmav2_bitslicing:
     PUSH {r0-r12, r14}
     LDR r0, =rs // Load the address of rs into r0
-    // permutation r0
-
-    LDR r2, [r0]// Load the first item of rs into r1
-    PPO_TUA r1, r2, r3
-    STR r1, [r0]// Store the value of r1 back into the first item of rs
-    LDR r2, [r0, #4]// Load the second item of rs into r1
-    PPO_TUA r1, r2, r3
-    STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
-    LDR r2, [r0, #8]// Load the third item of rs into r1
-    PPO_TUA r1, r2, r3
-    STR r1, [r0, #8]// Store the value of r1 back into the first item of rs
-    LDR r2, [r0, #12]// Load the fourth item of rs into r1
-    PPO_TUA r1, r2, r3
-    STR r1, [r0, #12]// Store the value of r1 back into the first item of rs
-
+    // permutation rs
+    PERMUTATION_TUA r0, r1, r2, r3
+   
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
     POP {r0-r12, r14}
     BX lr
