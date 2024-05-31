@@ -3,12 +3,10 @@
 
 .section .data
 .global rs
-rs:     .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
-
+rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
 
 .global qarmav2_bitslicing
 .type qarmav2_bitslicing, %function
-
 
 .macro PPO, dest_r, src_r, r3, rotate_amount, mask_value
     MOV \r3, \src_r, ROR#\rotate_amount
@@ -42,21 +40,21 @@ rs:     .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
 .endm
 
 .macro PERMUTATION_TUA base_r, t1, t2, t3
-    LDR \t2, [\base_r] // Load the first item of rs into r1
+    LDR \t2, [\base_r]// Load the first item of rs into r1
     PPO_TUA \t1, \t2, \t3
-    STR \t1, [\base_r] // Store the value of r1 back into the first item of rs
+    STR \t1, [\base_r]// Store the value of r1 back into the first item of rs
 
-    LDR \t2, [\base_r, #4] // Load the second item of rs into r1
+    LDR \t2, [\base_r, #4]// Load the second item of rs into r1
     PPO_TUA \t1, \t2, \t3
-    STR \t1, [\base_r, #4] // Store the value of r1 back into the second item of rs
+    STR \t1, [\base_r, #4]// Store the value of r1 back into the second item of rs
 
-    LDR \t2, [\base_r, #8] // Load the third item of rs into r1
+    LDR \t2, [\base_r, #8]// Load the third item of rs into r1
     PPO_TUA \t1, \t2, \t3
-    STR \t1, [\base_r, #8] // Store the value of r1 back into the third item of rs
+    STR \t1, [\base_r, #8]// Store the value of r1 back into the third item of rs
 
-    LDR \t2, [\base_r, #12] // Load the fourth item of rs into r1
+    LDR \t2, [\base_r, #12]// Load the fourth item of rs into r1
     PPO_TUA \t1, \t2, \t3
-    STR \t1, [\base_r, #12] // Store the value of r1 back into the fourth item of rs
+    STR \t1, [\base_r, #12]// Store the value of r1 back into the fourth item of rs
 .endm
 
 .text
@@ -64,8 +62,27 @@ qarmav2_bitslicing:
     PUSH {r0-r12, r14}
     LDR r0, =rs // Load the address of rs into r0
     // permutation rs
-    PERMUTATION_TUA r0, r1, r2, r3
-   
+    LDR r1, [r0]
+    LDR r2, [r0, #4]
+    LDR r3, [r0, #8]
+    LDR r4, [r0, #12]
+    MOV r5, r2, ROR#24
+    EOR r5, r5, r3, ROR#16
+    EOR r5, r5, r4, ROR#8
+    MOV r6, r3, ROR#24
+    EOR r6, r6, r4, ROR#16
+    EOR r6, r6, r1, ROR#8
+    MOV r7, r4, ROR#24
+    EOR r7, r7, r1, ROR#16
+    EOR r7, r7, r2, ROR#8
+    MOV r8, r1, ROR#24
+    EOR r8, r8, r2, ROR#16
+    EOR r8, r8, r3, ROR#8
+    STR r5, [r0]
+    STR r6, [r0, #4]
+    STR r7, [r0, #8]
+    STR r8, [r0, #12]
+
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
     POP {r0-r12, r14}
     BX lr
