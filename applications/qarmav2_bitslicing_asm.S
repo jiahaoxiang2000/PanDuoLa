@@ -7,16 +7,13 @@
 rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
 .align 4
 ts: .space 20*4
-
 .global qarmav2_bitslicing
 .type qarmav2_bitslicing, %function
-
 .macro PPO, dest_r, src_r, r3, rotate_amount, mask_value
     MOV \r3, \src_r, ROR#\rotate_amount
     AND \r3, \r3, #\mask_value
     ORR \dest_r, \dest_r, \r3
 .endm
-
 /**
  * Macro: PPO_TUA
  * the tua = [0, 11, 6, 13, 10, 1, 12, 7, 5, 14, 3, 8, 15, 4, 9, 2] permutaion on the PPO.
@@ -41,25 +38,23 @@ ts: .space 20*4
     PPO \dest_r, \src_r, \temp_r, 18, 0x30
     PPO \dest_r, \src_r, \temp_r, 10, 0xc
 .endm
-
-.macro PERMUTATION_TUA base_r, t1, t2, t3
+.macro PERMUTATION base_r, t1, t2, t3, PPO
     LDR \t2, [\base_r]// Load the first item of rs into r1
-    PPO_TUA \t1, \t2, \t3
+    \PPO \t1, \t2, \t3
     STR \t1, [\base_r]// Store the value of r1 back into the first item of rs
 
     LDR \t2, [\base_r, #4]// Load the second item of rs into r1
-    PPO_TUA \t1, \t2, \t3
+    \PPO \t1, \t2, \t3
     STR \t1, [\base_r, #4]// Store the value of r1 back into the second item of rs
 
     LDR \t2, [\base_r, #8]// Load the third item of rs into r1
-    PPO_TUA \t1, \t2, \t3
+    \PPO \t1, \t2, \t3
     STR \t1, [\base_r, #8]// Store the value of r1 back into the third item of rs
 
     LDR \t2, [\base_r, #12]// Load the fourth item of rs into r1
-    PPO_TUA \t1, \t2, \t3
+    \PPO \t1, \t2, \t3
     STR \t1, [\base_r, #12]// Store the value of r1 back into the fourth item of rs
 .endm
-
 .macro DIFFUSION_MATRIX base_r, r1, r2, r3, r4, r5, r6, r7, r8, r9
     LDR \r1, [\base_r]
     LDR \r2, [\base_r, #4]
@@ -82,7 +77,6 @@ ts: .space 20*4
     STR \r7, [\base_r, #8]
     STR \r8, [\base_r, #12]
 .endm
-
 @ the r11 is the pointer to the rs, r12 is the pointer to the ts
 .macro SBOX r11, r12, r0, r1, r2, r3, r4, r5
     LDR \r0, [\r11]
@@ -184,7 +178,6 @@ ts: .space 20*4
     LDR \r4, [\r12, #76]
     STR \r4, [\r11, #12]
 .endm
-
 .macro SBOX_INV r11, r12, r0, r1, r2, r3, r4, r5
     LDR \r0, [\r11]
     LDR \r1, [\r11, #4]
@@ -286,14 +279,13 @@ ts: .space 20*4
     LDR \r4, [\r12, #68]
     STR \r4, [\r11, #12]
 .endm
-
 .text
 qarmav2_bitslicing:
     PUSH {r0-r12, r14}
     LDR r11, =rs // r0 for the state value
     LDR r12, =ts // r1 for the temp value on the sbox computation
     // permutation rs
-    SBOX_INV r11, r12, r0, r1, r2, r3, r4, r5
+    PERMUTATION r11, r0, r1, r2, PPO_TUA
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
     POP {r0-r12, r14}
     BX lr
