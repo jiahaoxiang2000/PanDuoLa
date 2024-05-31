@@ -33,17 +33,17 @@ qarmav2_bitslicing:
     MOV r1, #0x0
     LDR r2, [r0]// Load the first item of rs into r1
 
-    PPO r1, r2, r3, 0, 0xc00030000 @ (0, [0, 7])
-    PPO r1, r2, r3, 12, 0x33000000 @ (6, [1, 3])
-    PPO r1, r2, r3, 24, 0xc000000
-    PPO r1, r2, r3, 20, 0xcc0000 @ (10, [4, 6])
-    PPO r1, r2, r3, 8, 0x300000
-    PPO r1, r2, r3, 6, 0xc300 @ (3, [8, 11])
-    PPO r1, r2, r3, 22, 0x3000
-    PPO r1, r2, r3, 14, 0xc00
-    PPO r1, r2, r3, 26, 0xc3 @ (13, [12, 15])
-    PPO r1, r2, r3, 18, 0x30
-    PPO r1, r2, r3, 10, 0xc
+    @ PPO r1, r2, r3, 0, 0xc00030000 @ (0, [0, 7])
+    @ PPO r1, r2, r3, 12, 0x33000000 @ (6, [1, 3])
+    @ PPO r1, r2, r3, 24, 0xc000000 @ (12, 2)
+    @ PPO r1, r2, r3, 20, 0xcc0000 @ (10, [4, 6])
+    @ PPO r1, r2, r3, 8, 0x300000 @ (4, 5)
+    @ PPO r1, r2, r3, 6, 0xc300 @ (3, [8, 11])
+    @ PPO r1, r2, r3, 22, 0x3000 @ (11, 9)
+    @ PPO r1, r2, r3, 14, 0xc00 @ (7, 10)
+    @ PPO r1, r2, r3, 26, 0xc3 @ (13, [12, 15])
+    @ PPO r1, r2, r3, 18, 0x30 @ (9, 13)
+    @ PPO r1, r2, r3, 10, 0xc @ (5, 14)
 
     // out r1 to r0
     STR r1, [r0]// Store the value of r1 back into the first item of rs
