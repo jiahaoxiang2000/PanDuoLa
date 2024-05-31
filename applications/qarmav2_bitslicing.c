@@ -54,4 +54,4 @@ static void qarmav2_bitslicing_cipher(int argc, char *argv[])
     rt_kprintf("Execution time: %lu cycles\n", elapsed);
 }
 
-MSH_CMD_EXPORT_ALIAS(qarmav2_bitslicing_cipher, qarmav2_b, qarmav2 bitslicing);
+MSH_CMD_EXPORT_ALIAS(qarmav2_bitslicing_cipher, b_qarmav2, qarmav2 bitslicing);

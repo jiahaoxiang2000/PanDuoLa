@@ -10,6 +10,21 @@ mask:   .word 0xc0000000, 0x30000000, 0xc000000, 0x3000000, 0xc00000, 0x300000, 
 .global qarmav2_bitslicing
 .type qarmav2_bitslicing, %function
 
+@ Define a macro named PPO, which stands for Permutation Primitive Operation.
+@ This macro performs a series of operations on the input and output registers, using a temporary register.
+
+@ Arguments:
+@ dest_r: The output register. The result of the operations will be stored in this register.
+@ src_r: The input register. The operations will be performed on the value in this register.
+@ r3: A temporary register used for intermediate calculations.
+@ rotate_amount: The number of bits to rotate the value in src_r to the right.
+@ mask_value: A value that will be used to mask the result of the rotation.
+.macro PPO, dest_r, src_r, r3, rotate_amount, mask_value
+    MOV \r3, \src_r, ROR#\rotate_amount
+    AND \r3, \r3, #\mask_value
+    ORR \dest_r, \dest_r, \r3
+.endm
+
 .text
 qarmav2_bitslicing:
     PUSH {r0-r12, r14}
@@ -17,70 +32,19 @@ qarmav2_bitslicing:
     // permutation r0
     MOV r1, #0x0
     LDR r2, [r0]// Load the first item of rs into r1
-    // permutation one
-    @ MOV r3, r2, ROR#0
-    @ AND r3, r3, #0xc0000000
-    @ ORR r1, r1, r3
-    // permutation two
-    MOV r3, r2, ROR#12
-    AND r3, r3, #0x30000000
-    ORR r1, r1, r3
-    // permutation three
-    MOV r3, r2, ROR#24
-    AND r3, r3, #0xc000000
-    ORR r1, r1, r3
-    // permutation four
-    MOV r3, r2, ROR#12
-    AND r3, r3, #0x3000000
-    ORR r1, r1, r3
-    // permutation five
-    MOV r3, r2, ROR#20
-    AND r3, r3, #0xc00000
-    ORR r1, r1, r3
-    // permutation six
-    MOV r3, r2, ROR#8
-    AND r3, r3, #0x300000
-    ORR r1, r1, r3
-    // permutation seven
-    MOV r3, r2, ROR#20
-    AND r3, r3, #0xc0000
-    ORR r1, r1, r3
-    // permutation eight
-    @ MOV r3, r2, ROR#0
-    @ AND r3, r3, #0x30000
-    @ ORR r1, r1, r3
-    // permutation nine
-    MOV r3, r2, ROR#6
-    AND r3, r3, #0xc000
-    ORR r1, r1, r3
-    // permutation ten
-    MOV r3, r2, ROR#22
-    AND r3, r3, #0x3000
-    ORR r1, r1, r3
-    // permutation eleven
-    MOV r3, r2, ROR#14
-    AND r3, r3, #0xc00
-    ORR r1, r1, r3
-    // permutation twelve
-    MOV r3, r2, ROR#6
-    AND r3, r3, #0x300
-    ORR r1, r1, r3
-    // permutation thirteen
-    MOV r3, r2, ROR#26
-    AND r3, r3, #0xc0
-    ORR r1, r1, r3
-    // permutation fourteen
-    MOV r3, r2, ROR#18
-    AND r3, r3, #0x30
-    ORR r1, r1, r3
-    // permutation fifteen
-    MOV r3, r2, ROR#10
-    AND r3, r3, #0xc
-    ORR r1, r1, r3
-    // permutation sixteen
-    MOV r3, r2, ROR#26
-    AND r3, r3, #0x3
-    ORR r1, r1, r3
+
+    PPO r1, r2, r3, 0, 0xc00030000 @ (0, [0, 7])
+    PPO r1, r2, r3, 12, 0x33000000 @ (6, [1, 3])
+    PPO r1, r2, r3, 24, 0xc000000
+    PPO r1, r2, r3, 20, 0xcc0000 @ (10, [4, 6])
+    PPO r1, r2, r3, 8, 0x300000
+    PPO r1, r2, r3, 6, 0xc300 @ (3, [8, 11])
+    PPO r1, r2, r3, 22, 0x3000
+    PPO r1, r2, r3, 14, 0xc00
+    PPO r1, r2, r3, 26, 0xc3 @ (13, [12, 15])
+    PPO r1, r2, r3, 18, 0x30
+    PPO r1, r2, r3, 10, 0xc
+
     // out r1 to r0
     STR r1, [r0]// Store the value of r1 back into the first item of rs
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
