@@ -1,12 +1,15 @@
 .syntax unified
 .thumb
 
-.global ts
+.global ss
 .global rs
+.global ks
 .section .data
-rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
 .align 4
-ts: .space 20*4
+ss: .space 20*4
+ks: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333, 0xc0f0c0f0, 0xcfcfcfcf, 0xcccccccc, 0x0, 0xcfcfc3f0, 0xf300003c, 0xcfcccc03, 0xf3cf00f, 0xccfffc, 0x30cfcc30, 0xfcf0cfcc, 0xf0cff33, 0xfcffc303, 0xfff0c30c, 0xf3cccfc0, 0xf3f3333, 0xcffcc330, 0xccffcff0, 0x3c00fff, 0xccffccf3
+rs: .word 0x0, 0x0, 0x0, 0x0
+
 .global qarmav2_bitslicing
 .type qarmav2_bitslicing, %function
 .macro PPO, dest_r, src_r, t1, t2, rotate_amount, mask_value
@@ -27,34 +30,32 @@ ts: .space 20*4
  */
 .macro PPO_TUA dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
-    LDR \t1, =0xc00030000
-    AND \dest_r, \src_r, \t1 @ (0, [0, 7])
-    PPO \dest_r, \src_r, \t1, \t2, 12, 0x33000000 @ (6, [1, 3])
-    PPO \dest_r, \src_r, \t1, \t2, 24, 0xc000000 @ (12, [2])
-    PPO \dest_r, \src_r, \t1, \t2, 20, 0xcc0000 @ (10, [4, 6])
-    PPO \dest_r, \src_r, \t1, \t2, 8, 0x300000 @ (4, [5])
-    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc300  @ (3, [8, 11])
-    PPO \dest_r, \src_r, \t1, \t2, 22, 0x3000 @ (11, [9])
-    PPO \dest_r, \src_r, \t1, \t2, 14, 0xc00  @ (7, [10])
-    PPO \dest_r, \src_r, \t1, \t2, 26, 0xc3 @ (13, [12, 15])
-    PPO \dest_r, \src_r, \t1, \t2, 18, 0x30 @  (9, [13])
-    PPO \dest_r, \src_r, \t1, \t2, 10, 0xc  @  (5, [14])
+    PPO \dest_r, \src_r, \t1, \t2, 0, 0xc0030000 @ (0, [0, 7])
+    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc300 @ (6, [8, 11])
+    PPO \dest_r, \src_r, \t1, \t2, 8, 0x300000 @ (8, [5])
+    PPO \dest_r, \src_r, \t1, \t2, 10, 0xc @ (10, [14])
+    PPO \dest_r, \src_r, \t1, \t2, 12, 0x33000000 @ (12, [1, 3])
+    PPO \dest_r, \src_r, \t1, \t2, 14, 0xc00 @ (14, [10])
+    PPO \dest_r, \src_r, \t1, \t2, 18, 0x30 @ (18, [13])
+    PPO \dest_r, \src_r, \t1, \t2, 20, 0xcc0000 @ (20, [4, 6])
+    PPO \dest_r, \src_r, \t1, \t2, 22, 0x3000 @ (22, [9])
+    PPO \dest_r, \src_r, \t1, \t2, 24, 0xc000000 @ (24, [2])
+    PPO \dest_r, \src_r, \t1, \t2, 26, 0xc3 @ (26, [12, 15])
 .endm
 
 .macro PPO_TUA_INV dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
-    LDR \t1, =0xc0030000
-    AND \dest_r, \src_r, \t1 @ (0, [0, 7])
-    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc000003 @ (3, [2, 15])
-    PPO \dest_r, \src_r, \t1, \t2, 8, 0xc0000 @ (4, [6])
-    PPO \dest_r, \src_r, \t1, \t2, 10, 0xc @ (5, [14])
-    PPO \dest_r, \src_r, \t1, \t2, 12, 0xcc0 @ (6, [10, 12])
-    PPO \dest_r, \src_r, \t1, \t2, 14, 0xc00000 @ (7, [4])
-    PPO \dest_r, \src_r, \t1, \t2, 18, 0x3000000 @ (9, [3])
-    PPO \dest_r, \src_r, \t1, \t2, 20, 0x330 @ (10, [11, 13])
-    PPO \dest_r, \src_r, \t1, \t2, 22, 0x3000 @ (11, [9])
-    PPO \dest_r, \src_r, \t1, \t2, 24, 0x30000000 @ (12, [1])
-    PPO \dest_r, \src_r, \t1, \t2, 26, 0x30c000 @ (13, [5, 8])
+    PPO \dest_r, \src_r, \t1, \t2, 0, 0xc0030000 @ (0, [0, 7])
+    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc000003 @ (6, [2, 15])
+    PPO \dest_r, \src_r, \t1, \t2, 8, 0xc0000 @ (8, [6])
+    PPO \dest_r, \src_r, \t1, \t2, 10, 0xc @ (10, [14])
+    PPO \dest_r, \src_r, \t1, \t2, 12, 0xcc0 @ (12, [10, 12])
+    PPO \dest_r, \src_r, \t1, \t2, 14, 0xc00000 @ (14, [4])
+    PPO \dest_r, \src_r, \t1, \t2, 18, 0x3000000 @ (18, [3])
+    PPO \dest_r, \src_r, \t1, \t2, 20, 0x330 @ (20, [11, 13])
+    PPO \dest_r, \src_r, \t1, \t2, 22, 0x3000 @ (22, [9])
+    PPO \dest_r, \src_r, \t1, \t2, 24, 0x30000000 @ (24, [1])
+    PPO \dest_r, \src_r, \t1, \t2, 26, 0x30c000 @ (26, [5, 8])
 .endm
 
 .macro PPO_TUA_F dest_r, src_r, t1, t2
@@ -85,21 +86,21 @@ ts: .space 20*4
     PPO \dest_r, \src_r, \t1, \t2, 30, 0xc000 @ (30, [8])
 .endm
 
-.macro PERMUTATION base_r, t1, t2, t3, t4, PPO
+.macro PERMUTATION base_r, t1, t2, t3, t4, PPO_F
     LDR \t2, [\base_r]// Load the first item of rs into r1
-    \PPO \t1, \t2, \t3, \t4
+    \PPO_F \t1, \t2, \t3, \t4
     STR \t1, [\base_r]// Store the value of r1 back into the first item of rs
 
     LDR \t2, [\base_r, #4]// Load the second item of rs into r1
-    \PPO \t1, \t2, \t3, \t4
+    \PPO_F \t1, \t2, \t3, \t4
     STR \t1, [\base_r, #4]// Store the value of r1 back into the second item of rs
 
     LDR \t2, [\base_r, #8]// Load the third item of rs into r1
-    \PPO \t1, \t2, \t3, \t4
+    \PPO_F \t1, \t2, \t3, \t4
     STR \t1, [\base_r, #8]// Store the value of r1 back into the third item of rs
 
     LDR \t2, [\base_r, #12]// Load the fourth item of rs into r1
-    \PPO \t1, \t2, \t3, \t4
+    \PPO_F \t1, \t2, \t3, \t4
     STR \t1, [\base_r, #12]// Store the value of r1 back into the fourth item of rs
 .endm
 .macro DIFFUSION_MATRIX base_r, r1, r2, r3, r4, r5, r6, r7, r8, r9
@@ -124,7 +125,7 @@ ts: .space 20*4
     STR \r7, [\base_r, #8]
     STR \r8, [\base_r, #12]
 .endm
-@ the r11 is the pointer to the rs, r12 is the pointer to the ts
+@ the r11 is the pointer to the rs, r12 is the pointer to the ss
 .macro SBOX r11, r12, r0, r1, r2, r3, r4, r5
     LDR \r0, [\r11]
     LDR \r1, [\r11, #4]
@@ -326,13 +327,50 @@ ts: .space 20*4
     LDR \r4, [\r12, #68]
     STR \r4, [\r11, #12]
 .endm
+
+.macro XOR_BITSLICING r12, r11, t0, t1
+    LDR \t0, [\r12]
+    LDR \t1, [\r11]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12]
+    LDR \t0, [\r12, #4]
+    LDR \t1, [\r11, #4]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12, #4]
+    LDR \t0, [\r12, #8]
+    LDR \t1, [\r11, #8]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12, #8]
+    LDR \t0, [\r12, #12]
+    LDR \t1, [\r11, #12]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12, #12]
+.endm
+
+.macro ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ADD \r11, \r11, #16
+    XOR_BITSLICING \r12, \r11, \r0, \r1
+    PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA
+    DIFFUSION_MATRIX \r12, \r0, \r1, \r2, \r3, \r4, \r5, \r6, \r7, \r8
+    SBOX \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
+.endm
+
 .text
 qarmav2_bitslicing:
     PUSH {r0-r12, r14}
-    LDR r11, =rs // r0 for the state value
-    LDR r12, =ts // r1 for the temp value on the sbox computation
-    // permutation rs
-    PERMUTATION r11, r0, r1, r2, r3, PPO_TUA_F_INV
+    LDR r12, =rs
+    LDR r11, =ks
+    LDR r10, =ss
+    @ start the encryption
+    XOR_BITSLICING r12, r11, r0, r1
+    SBOX r12, r10, r0, r1, r2, r3, r4, r5
+    @ forward part of 5 round
+    @ one round
+    ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    XOR_BITSLICING r12, r11, r0, r1
+    @ ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
     POP {r0-r12, r14}
     BX lr
