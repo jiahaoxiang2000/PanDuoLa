@@ -9,10 +9,11 @@ rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
 ts: .space 20*4
 .global qarmav2_bitslicing
 .type qarmav2_bitslicing, %function
-.macro PPO, dest_r, src_r, r3, rotate_amount, mask_value
-    MOV \r3, \src_r, ROR#\rotate_amount
-    AND \r3, \r3, #\mask_value
-    ORR \dest_r, \dest_r, \r3
+.macro PPO, dest_r, src_r, t1, t2, rotate_amount, mask_value
+    MOV \t1, \src_r, ROR#\rotate_amount
+    LDR \t2, =\mask_value
+    AND \t1, \t1, \t2
+    ORR \dest_r, \dest_r, \t1
 .endm
 /**
  * Macro: PPO_TUA
@@ -24,54 +25,81 @@ ts: .space 20*4
  * temp_r - A temporary register used for intermediate computations.
  *
  */
-.macro PPO_TUA dest_r, src_r, temp_r
+.macro PPO_TUA dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
-    LDR \temp_r, =0xc00030000
-    AND \dest_r, \src_r, \temp_r @ (0, [0, 7])
-    PPO \dest_r, \src_r, \temp_r, 12, 0x33000000 @ (6, [1, 3])
-    PPO \dest_r, \src_r, \temp_r, 24, 0xc000000 @ (12, [2])
-    PPO \dest_r, \src_r, \temp_r, 20, 0xcc0000 @ (10, [4, 6])
-    PPO \dest_r, \src_r, \temp_r, 8, 0x300000 @ (4, [5])
-    PPO \dest_r, \src_r, \temp_r, 6, 0xc300  @ (3, [8, 11])
-    PPO \dest_r, \src_r, \temp_r, 22, 0x3000 @ (11, [9])
-    PPO \dest_r, \src_r, \temp_r, 14, 0xc00  @ (7, [10])
-    PPO \dest_r, \src_r, \temp_r, 26, 0xc3 @ (13, [12, 15])
-    PPO \dest_r, \src_r, \temp_r, 18, 0x30 @  (9, [13])
-    PPO \dest_r, \src_r, \temp_r, 10, 0xc  @  (5, [14])
+    LDR \t1, =0xc00030000
+    AND \dest_r, \src_r, \t1 @ (0, [0, 7])
+    PPO \dest_r, \src_r, \t1, \t2, 12, 0x33000000 @ (6, [1, 3])
+    PPO \dest_r, \src_r, \t1, \t2, 24, 0xc000000 @ (12, [2])
+    PPO \dest_r, \src_r, \t1, \t2, 20, 0xcc0000 @ (10, [4, 6])
+    PPO \dest_r, \src_r, \t1, \t2, 8, 0x300000 @ (4, [5])
+    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc300  @ (3, [8, 11])
+    PPO \dest_r, \src_r, \t1, \t2, 22, 0x3000 @ (11, [9])
+    PPO \dest_r, \src_r, \t1, \t2, 14, 0xc00  @ (7, [10])
+    PPO \dest_r, \src_r, \t1, \t2, 26, 0xc3 @ (13, [12, 15])
+    PPO \dest_r, \src_r, \t1, \t2, 18, 0x30 @  (9, [13])
+    PPO \dest_r, \src_r, \t1, \t2, 10, 0xc  @  (5, [14])
 .endm
 
-.macro PPO_TUA_INV dest_r, src_r, temp_r
+.macro PPO_TUA_INV dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
-    LDR \temp_r, =0xc0030000
-    AND \dest_r, \src_r, \temp_r @ (0, [0, 7])
-    PPO \dest_r, \src_r, \temp_r, 6, 0xc000000 @ (3, [2, 15])
-    PPO \dest_r, \src_r, \temp_r, 6, 0x0000003 @ (3, [2, 15])
-    PPO \dest_r, \src_r, \temp_r, 8, 0xc0000 @ (4, [6])
-    PPO \dest_r, \src_r, \temp_r, 10, 0xc @ (5, [14])
-    PPO \dest_r, \src_r, \temp_r, 12, 0xcc0 @ (6, [10, 12])
-    PPO \dest_r, \src_r, \temp_r, 14, 0xc00000 @ (7, [4])
-    PPO \dest_r, \src_r, \temp_r, 18, 0x3000000 @ (9, [3])
-    PPO \dest_r, \src_r, \temp_r, 20, 0x330 @ (10, [11, 13])
-    PPO \dest_r, \src_r, \temp_r, 22, 0x3000 @ (11, [9])
-    PPO \dest_r, \src_r, \temp_r, 24, 0x30000000 @ (12, [1])
-    PPO \dest_r, \src_r, \temp_r, 26, 0x30c000 @ (13, [5, 8])
+    LDR \t1, =0xc0030000
+    AND \dest_r, \src_r, \t1 @ (0, [0, 7])
+    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc000003 @ (3, [2, 15])
+    PPO \dest_r, \src_r, \t1, \t2, 8, 0xc0000 @ (4, [6])
+    PPO \dest_r, \src_r, \t1, \t2, 10, 0xc @ (5, [14])
+    PPO \dest_r, \src_r, \t1, \t2, 12, 0xcc0 @ (6, [10, 12])
+    PPO \dest_r, \src_r, \t1, \t2, 14, 0xc00000 @ (7, [4])
+    PPO \dest_r, \src_r, \t1, \t2, 18, 0x3000000 @ (9, [3])
+    PPO \dest_r, \src_r, \t1, \t2, 20, 0x330 @ (10, [11, 13])
+    PPO \dest_r, \src_r, \t1, \t2, 22, 0x3000 @ (11, [9])
+    PPO \dest_r, \src_r, \t1, \t2, 24, 0x30000000 @ (12, [1])
+    PPO \dest_r, \src_r, \t1, \t2, 26, 0x30c000 @ (13, [5, 8])
 .endm
 
-.macro PERMUTATION base_r, t1, t2, t3, PPO
+.macro PPO_TUA_F dest_r, src_r, t1, t2
+    MOV \dest_r, #0x0
+    PPO \dest_r, \src_r, \t1, \t2, 2, 0x3000 @ (2, [9])
+    PPO \dest_r, \src_r, \t1, \t2, 4, 0xc30030 @ (4, [4, 7, 13])
+    PPO \dest_r, \src_r, \t1, \t2, 8, 0xc000000 @ (8, [2])
+    PPO \dest_r, \src_r, \t1, \t2, 14, 0x30000300 @ (14, [1, 11])
+    PPO \dest_r, \src_r, \t1, \t2, 16, 0xc003 @ (16, [8, 15])
+    PPO \dest_r, \src_r, \t1, \t2, 18, 0xc00c0 @ (18, [6, 12])
+    PPO \dest_r, \src_r, \t1, \t2, 24, 0x300000 @ (24, [5])
+    PPO \dest_r, \src_r, \t1, \t2, 26, 0x3000000 @ (26, [3])
+    PPO \dest_r, \src_r, \t1, \t2, 28, 0xc00 @ (28, [10])
+    PPO \dest_r, \src_r, \t1, \t2, 30, 0xc000000c @ (30, [0, 14])
+.endm
+
+.macro PPO_TUA_F_INV dest_r, src_r, t1, t2
+    MOV \dest_r, #0x0
+    PPO \dest_r, \src_r, \t1, \t2, 2, 0x30000003 @ (2, [1, 15])
+    PPO \dest_r, \src_r, \t1, \t2, 4, 0xc0 @ (4, [12])
+    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc0000 @ (6, [6])
+    PPO \dest_r, \src_r, \t1, \t2, 8, 0x3000 @ (8, [9])
+    PPO \dest_r, \src_r, \t1, \t2, 14, 0x3000030 @ (14, [3, 13])
+    PPO \dest_r, \src_r, \t1, \t2, 16, 0xc0030000 @ (16, [0, 7])
+    PPO \dest_r, \src_r, \t1, \t2, 18, 0xc00c00 @ (18, [4, 10])
+    PPO \dest_r, \src_r, \t1, \t2, 24, 0xc @ (24, [14])
+    PPO \dest_r, \src_r, \t1, \t2, 28, 0xc300300 @ (28, [2, 5, 11])
+    PPO \dest_r, \src_r, \t1, \t2, 30, 0xc000 @ (30, [8])
+.endm
+
+.macro PERMUTATION base_r, t1, t2, t3, t4, PPO
     LDR \t2, [\base_r]// Load the first item of rs into r1
-    \PPO \t1, \t2, \t3
+    \PPO \t1, \t2, \t3, \t4
     STR \t1, [\base_r]// Store the value of r1 back into the first item of rs
 
     LDR \t2, [\base_r, #4]// Load the second item of rs into r1
-    \PPO \t1, \t2, \t3
+    \PPO \t1, \t2, \t3, \t4
     STR \t1, [\base_r, #4]// Store the value of r1 back into the second item of rs
 
     LDR \t2, [\base_r, #8]// Load the third item of rs into r1
-    \PPO \t1, \t2, \t3
+    \PPO \t1, \t2, \t3, \t4
     STR \t1, [\base_r, #8]// Store the value of r1 back into the third item of rs
 
     LDR \t2, [\base_r, #12]// Load the fourth item of rs into r1
-    \PPO \t1, \t2, \t3
+    \PPO \t1, \t2, \t3, \t4
     STR \t1, [\base_r, #12]// Store the value of r1 back into the fourth item of rs
 .endm
 .macro DIFFUSION_MATRIX base_r, r1, r2, r3, r4, r5, r6, r7, r8, r9
@@ -304,7 +332,7 @@ qarmav2_bitslicing:
     LDR r11, =rs // r0 for the state value
     LDR r12, =ts // r1 for the temp value on the sbox computation
     // permutation rs
-    PERMUTATION r11, r0, r1, r2, PPO_TUA_INV
+    PERMUTATION r11, r0, r1, r2, r3, PPO_TUA_F_INV
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
     POP {r0-r12, r14}
     BX lr
