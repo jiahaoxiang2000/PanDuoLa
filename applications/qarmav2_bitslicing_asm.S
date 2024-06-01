@@ -1,14 +1,15 @@
 .syntax unified
 .thumb
 
-.global ss
 .global rs
-.global ks
 .section .data
 .align 4
-ss: .space 20*4
-ks: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333, 0xc0f0c0f0, 0xcfcfcfcf, 0xcccccccc, 0x0, 0xcfcfc3f0, 0xf300003c, 0xcfcccc03, 0xf3cf00f, 0xccfffc, 0x30cfcc30, 0xfcf0cfcc, 0xf0cff33, 0xfcffc303, 0xfff0c30c, 0xf3cccfc0, 0xf3f3333, 0xcffcc330, 0xccffcff0, 0x3c00fff, 0xccffccf3
+.type rs, %object
 rs: .word 0x0, 0x0, 0x0, 0x0
+@ rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
+ks: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333, 0xc0f0c0f0, 0xcfcfcfcf, 0xcccccccc, 0x0, 0xcfcfc3f0, 0xf300003c, 0xcfcccc03, 0xf3cf00f, 0xccfffc, 0x30cfcc30, 0xfcf0cfcc, 0xf0cff33, 0xfcffc303, 0xfff0c30c, 0xf3cccfc0, 0xf3f3333, 0xcffcc330, 0xccffcff0, 0x3c00fff, 0xccffccf3
+ms: .word 0xc0030000
+ss: .space 20*4
 
 .global qarmav2_bitslicing
 .type qarmav2_bitslicing, %function
@@ -30,7 +31,12 @@ rs: .word 0x0, 0x0, 0x0, 0x0
  */
 .macro PPO_TUA dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
-    PPO \dest_r, \src_r, \t1, \t2, 0, 0xc0030000 @ (0, [0, 7])
+    MOVW \t1, #:lower16:ms
+    MOVT \t1, #:upper16:ms 
+    LDR \t2, [\t1]
+    AND \t2, \t2, \src_r
+    ORR \dest_r, \dest_r, \t2
+    @ PPO \dest_r, \src_r, \t1, \t2, 0, 0xc0030000 @ (0, [0, 7])
     PPO \dest_r, \src_r, \t1, \t2, 6, 0xc300 @ (6, [8, 11])
     PPO \dest_r, \src_r, \t1, \t2, 8, 0x300000 @ (8, [5])
     PPO \dest_r, \src_r, \t1, \t2, 10, 0xc @ (10, [14])
@@ -355,12 +361,22 @@ rs: .word 0x0, 0x0, 0x0, 0x0
     SBOX \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
 .endm
 
+
+
 .text
 qarmav2_bitslicing:
     PUSH {r0-r12, r14}
-    LDR r12, =rs
-    LDR r11, =ks
-    LDR r10, =ss
+
+    MOVW r12, #:lower16:rs
+    MOVT r12, #:upper16:rs 
+
+    MOVW r11, #:lower16:ks
+    MOVT r11, #:upper16:ks
+    
+    MOVW r10, #:lower16:ss
+    MOVT r10, #:upper16:ss
+
+    @ PERMUTATION r12, r0, r1, r2, r3, PPO_TUA
     @ start the encryption
     XOR_BITSLICING r12, r11, r0, r1
     SBOX r12, r10, r0, r1, r2, r3, r4, r5
@@ -369,8 +385,9 @@ qarmav2_bitslicing:
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
-    XOR_BITSLICING r12, r11, r0, r1
-    @ ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
     POP {r0-r12, r14}
     BX lr
+
