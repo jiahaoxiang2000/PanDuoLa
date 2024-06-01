@@ -7,7 +7,9 @@
 .type rs, %object
 rs: .word 0x0, 0x0, 0x0, 0x0
 @ rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
-ks: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333, 0xc0f0c0f0, 0xcfcfcfcf, 0xcccccccc, 0x0, 0xcfcfc3f0, 0xf300003c, 0xcfcccc03, 0xf3cf00f, 0xccfffc, 0x30cfcc30, 0xfcf0cfcc, 0xf0cff33, 0xfcffc303, 0xfff0c30c, 0xf3cccfc0, 0xf3f3333, 0xcffcc330, 0xccffcff0, 0x3c00fff, 0xccffccf3
+@ rs: .word 0xfffff0cf, 0xfc3ff33f, 0xcccc3ff, 0x3fcc030c
+ks: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333, 0xc0f0c0f0, 0xcfcfcfcf, 0xcccccccc, 0x0, 0xcfcfc3f0, 0xf300003c, 0xcfcccc03, 0xf3cf00f, 0xccfffc, 0x30cfcc30, 0xfcf0cfcc, 0xf0cff33, 0xfcffc303, 0xfff0c30c, 0xf3cccfc0, 0xf3f3333, 0xcffcc330, 0xccffcff0, 0x3c00fff, 0xccffccf3, 0xc3c3c3c3, 0xcccccccc, 0xffff, 0xff00fc, 0xf0f0f0f0, 0xcccccccf, 0xfffc0000, 0xfc03fc03, 0x3cfc0c3f, 0xcf00fc3c, 0x3300f0f0, 0xf03c33c0, 0xc33ccfc, 0xc3000c0f, 0x33ffc33f, 0xcfcf3f00, 0xfc33330, 0xf00c3fff, 0x300fc33, 0x33cf0000, 0x30f3fc3, 0xc3c0f3fc, 0xfccfffff, 0xcfccfc3c, 0xfc0c0000, 0xff030c30, 0xc030ccff, 0x3cc3ff33, 0xf0cc3ffc, 0xc3f000cc, 0xf03ccc0, 0xf3c33f00
+
 ms: .word 0xc0030000
 ss: .space 20*4
 
@@ -32,7 +34,7 @@ ss: .space 20*4
 .macro PPO_TUA dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
     MOVW \t1, #:lower16:ms
-    MOVT \t1, #:upper16:ms 
+    MOVT \t1, #:upper16:ms
     LDR \t2, [\t1]
     AND \t2, \t2, \src_r
     ORR \dest_r, \dest_r, \t2
@@ -51,8 +53,19 @@ ss: .space 20*4
 
 .macro PPO_TUA_INV dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
-    PPO \dest_r, \src_r, \t1, \t2, 0, 0xc0030000 @ (0, [0, 7])
-    PPO \dest_r, \src_r, \t1, \t2, 6, 0xc000003 @ (6, [2, 15])
+    MOVW \t1, #:lower16:ms
+    MOVT \t1, #:upper16:ms
+    LDR \t2, [\t1]
+    AND \t2, \t2, \src_r
+    ORR \dest_r, \dest_r, \t2
+    @ PPO \dest_r, \src_r, \t1, \t2, 0, 0xc0030000 @ (0, [0, 7])
+    @ PPO \dest_r, \src_r, \t1, \t2, 6, 0xc000003 @ (6, [2, 15])
+    MOV \t1, \src_r, ROR#6
+    MOVW \t2, #0x0003
+    MOVT \t2, #0xc00
+    AND \t1, \t1, \t2
+    ORR \dest_r, \dest_r, \t1
+
     PPO \dest_r, \src_r, \t1, \t2, 8, 0xc0000 @ (8, [6])
     PPO \dest_r, \src_r, \t1, \t2, 10, 0xc @ (10, [14])
     PPO \dest_r, \src_r, \t1, \t2, 12, 0xcc0 @ (12, [10, 12])
@@ -361,18 +374,24 @@ ss: .space 20*4
     SBOX \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
 .endm
 
-
+.macro ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    SBOX_INV \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
+    DIFFUSION_MATRIX \r12, \r0, \r1, \r2, \r3, \r4, \r5, \r6, \r7, \r8
+    PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA_INV
+    ADD \r11, \r11, #16
+    XOR_BITSLICING \r12, \r11, \r0, \r1
+.endm
 
 .text
 qarmav2_bitslicing:
     PUSH {r0-r12, r14}
 
     MOVW r12, #:lower16:rs
-    MOVT r12, #:upper16:rs 
+    MOVT r12, #:upper16:rs
 
     MOVW r11, #:lower16:ks
     MOVT r11, #:upper16:ks
-    
+
     MOVW r10, #:lower16:ss
     MOVT r10, #:upper16:ss
 
@@ -387,7 +406,25 @@ qarmav2_bitslicing:
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    @ middle part
+    PERMUTATION r12, r0, r1, r2, r3, PPO_TUA
+    ADD r11, r11, #16
+    XOR_BITSLICING r12, r11, r0, r1
+    DIFFUSION_MATRIX r12, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ADD r11, r11, #16
+    XOR_BITSLICING r12, r11, r0, r1
+    PERMUTATION r12, r0, r1, r2, r3, PPO_TUA_INV
+    @ backward part of 5 round
+    ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
+    # end white key addition
+    SBOX_INV r12, r10, r0, r1, r2, r3, r4, r5
+    ADD r11, r11, #16
+    XOR_BITSLICING r12, r11, r0, r1
+
     @ STR r1, [r0, #4]// Store the value of r1 back into the first item of rs
     POP {r0-r12, r14}
     BX lr
-
