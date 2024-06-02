@@ -367,14 +367,14 @@ ss: .space 20*4
 .macro ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ADD \r11, \r11, #16
     XOR_BITSLICING \r12, \r11, \r0, \r1
-    PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA
+    @ PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA
     @ DIFFUSION_MATRIX \r12, \r0, \r1, \r2, \r3, \r4, \r5, \r6, \r7, \r8
     @ SBOX \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
 .endm
 .macro ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     @ SBOX_INV \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
     @ DIFFUSION_MATRIX \r12, \r0, \r1, \r2, \r3, \r4, \r5, \r6, \r7, \r8
-    PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA_INV
+    @ PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA_INV
     ADD \r11, \r11, #16
     XOR_BITSLICING \r12, \r11, \r0, \r1
 .endm
@@ -404,13 +404,13 @@ qarmav2_bitslicing:
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     @ middle part
-    PERMUTATION r12, r0, r1, r2, r3, PPO_TUA
+    @ PERMUTATION r12, r0, r1, r2, r3, PPO_TUA
     ADD r11, r11, #16
     XOR_BITSLICING r12, r11, r0, r1
     @ DIFFUSION_MATRIX r12, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ADD r11, r11, #16
     XOR_BITSLICING r12, r11, r0, r1
-    PERMUTATION r12, r0, r1, r2, r3, PPO_TUA_INV
+    @ PERMUTATION r12, r0, r1, r2, r3, PPO_TUA_INV
     @ backward part of 5 round
     ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
