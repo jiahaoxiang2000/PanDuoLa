@@ -346,7 +346,6 @@ ss: .space 20*4
     LDR \r4, [\r12, #68]
     STR \r4, [\r11, #12]
 .endm
-
 .macro XOR_BITSLICING r12, r11, t0, t1
     LDR \t0, [\r12]
     LDR \t1, [\r11]
@@ -365,17 +364,15 @@ ss: .space 20*4
     EOR \t0, \t0, \t1
     STR \t0, [\r12, #12]
 .endm
-
 .macro ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ADD \r11, \r11, #16
     XOR_BITSLICING \r12, \r11, \r0, \r1
     PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA
     DIFFUSION_MATRIX \r12, \r0, \r1, \r2, \r3, \r4, \r5, \r6, \r7, \r8
-    SBOX \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
+    @ SBOX \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
 .endm
-
 .macro ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
-    SBOX_INV \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
+    @ SBOX_INV \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
     DIFFUSION_MATRIX \r12, \r0, \r1, \r2, \r3, \r4, \r5, \r6, \r7, \r8
     PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_TUA_INV
     ADD \r11, \r11, #16
@@ -398,7 +395,7 @@ qarmav2_bitslicing:
     @ PERMUTATION r12, r0, r1, r2, r3, PPO_TUA
     @ start the encryption
     XOR_BITSLICING r12, r11, r0, r1
-    SBOX r12, r10, r0, r1, r2, r3, r4, r5
+    @ SBOX r12, r10, r0, r1, r2, r3, r4, r5
     @ forward part of 5 round
     @ one round
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
@@ -421,7 +418,7 @@ qarmav2_bitslicing:
     ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     ROUND_INV r12, r11, r10, r0, r1, r2, r3, r4, r5, r6, r7, r8
     # end white key addition
-    SBOX_INV r12, r10, r0, r1, r2, r3, r4, r5
+    @ SBOX_INV r12, r10, r0, r1, r2, r3, r4, r5
     ADD r11, r11, #16
     XOR_BITSLICING r12, r11, r0, r1
 
