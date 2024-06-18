@@ -117,6 +117,36 @@ ss:         .space 20*4
     STR \r4, [\r11, #12]
 .endm
 
+.macro PPO, dest_r, src_r, t1, t2, rotate_amount, mask_value
+    MOV \t1, \src_r, ROR#\rotate_amount
+    LDR \t2, =\mask_value
+    AND \t1, \t1, \t2
+    ORR \dest_r, \dest_r, \t1
+.endm
+
+.macro PPO_PI dest_r, src_r, t1, t2
+    MOV \dest_r, #0x0
+    @ MOVW \t1, #:lower16:ms
+    @ MOVT \t1, #:upper16:ms
+    @ LDR \t2, [\t1]
+    @ AND \t2, \t2, \src_r
+    @ ORR \dest_r, \dest_r, \t2
+    PPO \dest_r, \src_r, \t1, \t2, 1, 0x800080 @ (1, [8, 24], '0x800080')
+    PPO \dest_r, \src_r, \t1, \t2, 5, 0x2000200 @ (5, [6, 22], '0x2000200')
+    PPO \dest_r, \src_r, \t1, \t2, 7, 0x80008 @ (7, [12, 28])
+    PPO \dest_r, \src_r, \t1, \t2, 9, 0x1000100 @ (9, [7, 23])
+    PPO \dest_r, \src_r, \t1, \t2, 11, 0x20002 @ (11, [14, 30])
+    PPO \dest_r, \src_r, \t1, \t2, 13, 0x400040 @ (13, [9, 25])
+    PPO \dest_r, \src_r, \t1, \t2, 15, 0x4000400 @ (15, [5, 21])
+    PPO \dest_r, \src_r, \t1, \t2, 19, 0x100010 @ (19, [11, 27])
+    PPO \dest_r, \src_r, \t1, \t2, 21, 0x80008000 @ (21, [0, 16])
+    PPO \dest_r, \src_r, \t1, \t2, 23, 0x8000800 @ (23, [4, 20])
+    PPO \dest_r, \src_r, \t1, \t2, 25, 0x30003000 @ (25, [2, 3, 18, 19])
+    PPO \dest_r, \src_r, \t1, \t2, 27, 0x240024 @ (27, [10, 13, 26, 29])
+    PPO \dest_r, \src_r, \t1, \t2, 29, 0x40004000 @ (29, [1, 17])
+    PPO \dest_r, \src_r, \t1, \t2, 31, 0x10001 @ (31, [15, 31])
+.endm
+
 .text
 warp_bitslicing:
     PUSH {r0-r12, r14}
