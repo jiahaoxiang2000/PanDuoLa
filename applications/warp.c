@@ -20,18 +20,20 @@ static void warp_cipher(int argc, char *argv[])
     start = SysTick->VAL;
 
     // Your code Start
+
     for (size_t r = 0; r < 40; r++)
     {
         for (size_t i = 0; i < 16; i++)
         {
-            X[2 * i + 1] ^=  S[X[2 * i]];
+            X[2 * i + 1] ^= S[X[2 * i]];
         }
         for (size_t i = 0; i < 16; i++)
         {
             if ((r) % 2 == 0)
             {
                 X[2 * i + 1] ^= K0[i];
-            } else
+            }
+            else
             {
                 X[2 * i + 1] ^= K1[i];
             }
@@ -53,7 +55,6 @@ static void warp_cipher(int argc, char *argv[])
     }
     X[1] = X[1] ^ RC0s[40];
     X[3] = X[3] ^ RC1s[40];
-    
 
     // Your code End
     end = SysTick->VAL;
@@ -61,9 +62,12 @@ static void warp_cipher(int argc, char *argv[])
     elapsed = start > end ? (start - end) : (start + (SysTick->LOAD - end));
     for (size_t i = 0; i < 32; i++)
     {
-        printf("%x", X[i]);
+        if (X[i] != C[i])
+        {
+            rt_kprintf("Error at %d\n", i);
+        }
     }
-    printf("\n");
+
     // printf("cipher %llx\n", X);
     rt_kprintf("Execution time: %lu cycles\n", elapsed);
 }
