@@ -5,17 +5,17 @@
 .section .data
 .align 4
 .type warp_rs, %object
-@ warp_rs:    .word 0xff00ff, 0xf0f0f0f, 0x33333333, 0x55555555
-warp_rs:    .word 0xff00ff, 0xf0f0f0f, 0x33333333, 0x55555555
+warp_rs:    .word 0xffff00, 0xf0ff0f0, 0x3333cccc, 0x5555aaaa @ test vector
+@ warp_rs:    .word 0xff00ff, 0xf0f0f0f, 0x33333333, 0x55555555 @ test for compose
 @ rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
 @ rs: .word 0xfffff0cf, 0xfc3ff33f, 0xcccc3ff, 0x3fcc030c
-ks:         .word 0xffff, 0xff00ff,
+ks:         .word 0x5555, 0x10550055, 0x5050505, 0x11111111,
 ss:         .space 20*4
 
 .global warp_bitslicing
 .type warp_bitslicing, %function
 
-@ the r11 is the pointer to the rs, r12 is the pointer to the ss
+@ the r11 is the pointer to the rs, r12 is the pointer to the ss, r0-3 are the output registers
 .macro SBOX r11, r12, r0, r1, r2, r3, r4, r5
     LDR \r0, [\r11]
     LDR \r1, [\r11, #4]
@@ -105,17 +105,13 @@ ss:         .space 20*4
     ORR \r4, \r4, \r5
     STR \r4, [\r12, #76]
     @ r0 = T[16]
-    LDR \r4, [\r12, #64]
-    STR \r4, [\r11]
+    LDR \r0, [\r12, #64]
     @ r1 = T[19]
-    LDR \r4, [\r12, #76]
-    STR \r4, [\r11, #4]
+    LDR \r1, [\r12, #76]
     @ r2 = T[18]
-    LDR \r4, [\r12, #72]
-    STR \r4, [\r11, #8]
+    LDR \r2, [\r12, #72]
     @ r3 = T[14]
-    LDR \r4, [\r12, #56]
-    STR \r4, [\r11, #12]
+    LDR \r3, [\r12, #56]
 .endm
 
 .macro PPO, dest_r, src_r, t1, t2, rotate_amount, mask_value
@@ -161,6 +157,56 @@ ss:         .space 20*4
     STR \t1, [\base_r, #12]// Store the value of r1 back into the fourth item of rs
 .endm
 
+.macro F_ROUND base, ss, src0, src1, src2, src3, t0, t1
+    SBOX \base, \ss, \src0, \src1, \src2, \src3,\t0, \t1
+    MOV \src0, \src0, ROR#1
+    AND \src0, \src0, #0x55555555
+    LDR \t0, [\base]
+    EOR \src0, \src0, \t0
+    STR \src0, [\base]
+    MOV \src1, \src1, ROR#1
+    AND \src1, \src1, #0x55555555
+    LDR \t0, [\base, #4]
+    EOR \src1, \src1, \t0
+    STR \src1, [\base, #4]
+    MOV \src2, \src2, ROR#1
+    AND \src2, \src2, #0x55555555
+    LDR \t0, [\base, #8]
+    EOR \src2, \src2, \t0
+    STR \src2, [\base, #8]
+    MOV \src3, \src3, ROR#1
+    AND \src3, \src3, #0x55555555
+    LDR \t0, [\base, #12]
+    EOR \src3, \src3, \t0
+    STR \src3, [\base, #12]
+.endm
+
+.macro XOR_BITSLICING r12, r11, t0, t1
+    LDR \t0, [\r12]
+    LDR \t1, [\r11]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12]
+    LDR \t0, [\r12, #4]
+    LDR \t1, [\r11, #4]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12, #4]
+    LDR \t0, [\r12, #8]
+    LDR \t1, [\r11, #8]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12, #8]
+    LDR \t0, [\r12, #12]
+    LDR \t1, [\r11, #12]
+    EOR \t0, \t0, \t1
+    STR \t0, [\r12, #12]
+.endm
+
+.macro ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5
+    F_ROUND \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
+    XOR_BITSLICING \r12, \r11, \r0, \r1
+    ADD \r11, \r11, #16
+    PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_PI
+.endm
+
 .text
 warp_bitslicing:
     PUSH {r0-r12, r14}
@@ -173,7 +219,13 @@ warp_bitslicing:
     MOVW r10, #:lower16:ss
     MOVT r10, #:upper16:ss
 
-    PERMUTATION r12, r0, r1, r2, r3, PPO_PI
+    @ F_ROUND r12, r10, r0, r1, r2, r3, r4, r5
+    @ XOR_BITSLICING r12, r11, r0, r1
+    @ ADD r11, r11, #16
+    @ PERMUTATION r12, r0, r1, r2, r3, PPO_PI
+    ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5
+
+    F_ROUND r12, r10, r0, r1, r2, r3, r4, r5
 
     POP {r0-r12, r14}
     BX lr
