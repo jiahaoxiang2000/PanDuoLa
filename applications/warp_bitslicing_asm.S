@@ -5,6 +5,7 @@
 .section .data
 .align 4
 .type warp_rs, %object
+@ warp_rs:    .word 0xff00ff, 0xf0f0f0f, 0x33333333, 0x55555555
 warp_rs:    .word 0xff00ff, 0xf0f0f0f, 0x33333333, 0x55555555
 @ rs: .word 0xffff, 0xff00ff, 0xf0f0f0f, 0x33333333
 @ rs: .word 0xfffff0cf, 0xfc3ff33f, 0xcccc3ff, 0x3fcc030c
@@ -126,25 +127,38 @@ ss:         .space 20*4
 
 .macro PPO_PI dest_r, src_r, t1, t2
     MOV \dest_r, #0x0
-    @ MOVW \t1, #:lower16:ms
-    @ MOVT \t1, #:upper16:ms
-    @ LDR \t2, [\t1]
-    @ AND \t2, \t2, \src_r
-    @ ORR \dest_r, \dest_r, \t2
     PPO \dest_r, \src_r, \t1, \t2, 1, 0x800080 @ (1, [8, 24], '0x800080')
     PPO \dest_r, \src_r, \t1, \t2, 5, 0x2000200 @ (5, [6, 22], '0x2000200')
-    PPO \dest_r, \src_r, \t1, \t2, 7, 0x80008 @ (7, [12, 28])
-    PPO \dest_r, \src_r, \t1, \t2, 9, 0x1000100 @ (9, [7, 23])
-    PPO \dest_r, \src_r, \t1, \t2, 11, 0x20002 @ (11, [14, 30])
-    PPO \dest_r, \src_r, \t1, \t2, 13, 0x400040 @ (13, [9, 25])
-    PPO \dest_r, \src_r, \t1, \t2, 15, 0x4000400 @ (15, [5, 21])
-    PPO \dest_r, \src_r, \t1, \t2, 19, 0x100010 @ (19, [11, 27])
-    PPO \dest_r, \src_r, \t1, \t2, 21, 0x80008000 @ (21, [0, 16])
-    PPO \dest_r, \src_r, \t1, \t2, 23, 0x8000800 @ (23, [4, 20])
-    PPO \dest_r, \src_r, \t1, \t2, 25, 0x30003000 @ (25, [2, 3, 18, 19])
-    PPO \dest_r, \src_r, \t1, \t2, 27, 0x240024 @ (27, [10, 13, 26, 29])
-    PPO \dest_r, \src_r, \t1, \t2, 29, 0x40004000 @ (29, [1, 17])
-    PPO \dest_r, \src_r, \t1, \t2, 31, 0x10001 @ (31, [15, 31])
+    PPO \dest_r, \src_r, \t1, \t2, 7, 0x80008 @ (7, [12, 28], '0x80008')
+    PPO \dest_r, \src_r, \t1, \t2, 9, 0x1000100 @ (9, [7, 23], '0x1000100')
+    PPO \dest_r, \src_r, \t1, \t2, 11, 0x20002  @ (11, [14, 30], '0x20002')
+    PPO \dest_r, \src_r, \t1, \t2, 13, 0x400040 @ (13, [9, 25], '0x400040')
+    PPO \dest_r, \src_r, \t1, \t2, 15, 0x4000400 @ (15, [5, 21], '0x4000400')
+    PPO \dest_r, \src_r, \t1, \t2, 19, 0x100010 @ (19, [11, 27], '0x100010')
+    PPO \dest_r, \src_r, \t1, \t2, 21, 0x80008000 @ (21, [0, 16], '0x80008000')
+    PPO \dest_r, \src_r, \t1, \t2, 23, 0x8000800 @ (23, [4, 20], '0x8000800')
+    PPO \dest_r, \src_r, \t1, \t2, 25, 0x30003000 @ (25, [2, 3, 18, 19], '0x30003000')
+    PPO \dest_r, \src_r, \t1, \t2, 27, 0x240024 @ (27, [10, 13, 26, 29], '0x240024')
+    PPO \dest_r, \src_r, \t1, \t2, 29, 0x40004000 @ (29, [1, 17], '0x40004000')
+    PPO \dest_r, \src_r, \t1, \t2, 31, 0x10001 @ (31, [15, 31], '0x10001')
+.endm
+
+.macro PERMUTATION base_r, t1, t2, t3, t4, PPO_F
+    LDR \t2, [\base_r]// Load the first item of rs into r1
+    \PPO_F \t1, \t2, \t3, \t4
+    STR \t1, [\base_r]// Store the value of r1 back into the first item of rs
+
+    LDR \t2, [\base_r, #4]// Load the second item of rs into r1
+    \PPO_F \t1, \t2, \t3, \t4
+    STR \t1, [\base_r, #4]// Store the value of r1 back into the second item of rs
+
+    LDR \t2, [\base_r, #8]// Load the third item of rs into r1
+    \PPO_F \t1, \t2, \t3, \t4
+    STR \t1, [\base_r, #8]// Store the value of r1 back into the third item of rs
+
+    LDR \t2, [\base_r, #12]// Load the fourth item of rs into r1
+    \PPO_F \t1, \t2, \t3, \t4
+    STR \t1, [\base_r, #12]// Store the value of r1 back into the fourth item of rs
 .endm
 
 .text
@@ -159,7 +173,7 @@ warp_bitslicing:
     MOVW r10, #:lower16:ss
     MOVT r10, #:upper16:ss
 
-    SBOX r12, r10, r0, r1, r2, r3, r4, r5
+    PERMUTATION r12, r0, r1, r2, r3, PPO_PI
 
     POP {r0-r12, r14}
     BX lr
