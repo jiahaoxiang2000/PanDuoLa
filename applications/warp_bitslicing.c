@@ -3,6 +3,33 @@
 #include <stm32l4xx.h>
 #include <stdio.h>
 
+static void warp_bitslicing_cipher(int argc, char *argv[])
+{
+    uint32_t r0, r1, r2, r3;
+    r0 = 0xffff;
+    r1 = 0xff00ff;
+    r2 = 0xf0f0f0f;
+    r3 = 0x33333333;
+
+    uint32_t start, end, elapsed;
+    start = SysTick->VAL;
+
+    // Your code Start
+
+    warp_bitslicing();
+
+    // Your code End
+    end = SysTick->VAL;
+    printf("0 %x\n", warp_rs[0]);
+    printf("1 %x\n", warp_rs[1]);
+    printf("2 %x\n", warp_rs[2]);
+    printf("4 %x\n", warp_rs[3]);
+    elapsed = start > end ? (start - end) : (start + (SysTick->LOAD - end));
+    rt_kprintf("Execution time: %lu cycles\n", elapsed);
+}
+
+MSH_CMD_EXPORT_ALIAS(warp_bitslicing_cipher, warp_b, warp bitslicing);
+
 void sbox(uint32_t *r0, uint32_t *r1, uint32_t *r2, uint32_t *r3)
 {
     uint32_t T[20] = {0};
@@ -57,41 +84,46 @@ void sbox(uint32_t *r0, uint32_t *r1, uint32_t *r2, uint32_t *r3)
     *r3 = T[14];
 }
 
-static void warp_bitslicing_cipher(int argc, char *argv[])
+// Function to perform right cyclic shift
+uint32_t right_cyclic_shift(uint32_t value, uint32_t shift)
 {
-    uint32_t r0, r1, r2, r3;
-    r0 = 0xffff;
-    r1 = 0xff00ff;
-    r2 = 0xf0f0f0f;
-    r3 = 0x33333333;
-
-    uint32_t start, end, elapsed;
-    start = SysTick->VAL;
-
-    // Your code Start
-
-    warp_bitslicing();
-
-    // Your code End
-    end = SysTick->VAL;
-    printf("0 %x\n", warp_rs[0]);
-    printf("1 %x\n", warp_rs[1]);
-    printf("2 %x\n", warp_rs[2]);
-    printf("4 %x\n", warp_rs[3]);
-    elapsed = start > end ? (start - end) : (start + (SysTick->LOAD - end));
-    rt_kprintf("Execution time: %lu cycles\n", elapsed);
+    // Ensure the shift is within the range of 0 to 31
+    shift &= 31;
+    return (value >> shift) | (value << (32 - shift));
 }
 
-MSH_CMD_EXPORT_ALIAS(warp_bitslicing_cipher, warp_b, warp bitslicing);
+// Function to perform permutation in bitslicing
+void permutation_bitslicing(uint32_t *r0, uint32_t *r1, uint32_t *r2, uint32_t *r3, uint32_t shift[])
+{
+
+    uint32_t R0, R1, R2, R3;
+    R0 = 0;
+    R1 = 0;
+    R2 = 0;
+    R3 = 0;
+
+    for (int i = 0; i < 32; i++)
+    {
+        R0 |= right_cyclic_shift(*r0, shift[i]) & (1 << ((31 - i)));
+        R1 |= right_cyclic_shift(*r1, shift[i]) & (1 << ((31 - i)));
+        R2 |= right_cyclic_shift(*r2, shift[i]) & (1 << ((31 - i)));
+        R3 |= right_cyclic_shift(*r3, shift[i]) & (1 << ((31 - i)));
+    }
+    *r0 = R0;
+    *r1 = R1;
+    *r2 = R2;
+    *r3 = R3;
+}
 
 static void warp_bitslicing_c(int argc, char *argv[])
 {
     uint32_t r0, r1, r2, r3;
     uint32_t b = 1;
     uint32_t c = 0;
-    r0 = 0xff00ff ;
-    r1 = 0xf0f0f0f ;
-    r2 = 0x33333333 ;
+    uint32_t p_shift[] = {21, 29, 25, 25, 23, 15, 5, 9, 1, 13, 27, 19, 7, 27, 11, 31, 21, 29, 25, 25, 23, 15, 5, 9, 1, 13, 27, 19, 7, 27, 11, 31};
+    r0 = 0xff00ff;
+    r1 = 0xf0f0f0f;
+    r2 = 0x33333333;
     r3 = 0x55555555;
 
     uint32_t start, end, elapsed;
@@ -99,7 +131,7 @@ static void warp_bitslicing_c(int argc, char *argv[])
 
     // Your code Start
 
-    sbox(&r0, &r1, &r2, &r3);
+    permutation_bitslicing(&r0, &r1, &r2, &r3, p_shift);
 
     // Your code End
     end = SysTick->VAL;
