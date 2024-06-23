@@ -204,7 +204,7 @@ ss:         .space 20*4
     F_ROUND \r12, \r10, \r0, \r1, \r2, \r3, \r4, \r5
     XOR_BITSLICING \r12, \r11, \r0, \r1
     ADD \r11, \r11, #16
-    PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_PI
+    @ PERMUTATION \r12, \r0, \r1, \r2, \r3, PPO_PI
 .endm
 
 .text
