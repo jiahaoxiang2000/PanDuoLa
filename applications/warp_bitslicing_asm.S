@@ -158,7 +158,7 @@ ss:         .space 20*4
 .endm
 
 .macro F_ROUND base, ss, src0, src1, src2, src3, t0, t1
-    SBOX \base, \ss, \src0, \src1, \src2, \src3,\t0, \t1
+    @ SBOX \base, \ss, \src0, \src1, \src2, \src3,\t0, \t1
     MOV \src0, \src0, ROR#1
     AND \src0, \src0, #0x55555555
     LDR \t0, [\base]
@@ -219,10 +219,6 @@ warp_bitslicing:
     MOVW r10, #:lower16:ss
     MOVT r10, #:upper16:ss
 
-    @ F_ROUND r12, r10, r0, r1, r2, r3, r4, r5
-    @ XOR_BITSLICING r12, r11, r0, r1
-    @ ADD r11, r11, #16
-    @ PERMUTATION r12, r0, r1, r2, r3, PPO_PI
     MOV r6, #40 // Initialize counter with 40
 loop_start:
     ROUND r12, r11, r10, r0, r1, r2, r3, r4, r5 // Execute ROUND
