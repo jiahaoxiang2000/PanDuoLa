@@ -141,7 +141,7 @@ static void warp_bitslicing_c(int argc, char *argv[])
         t1 = r1 & 0xAAAAAAAA;
         t2 = r2 & 0xAAAAAAAA;
         t3 = r3 & 0xAAAAAAAA;
-        sbox(&t0, &t1, &t2, &t3);
+        // sbox(&t0, &t1, &t2, &t3);
         t0 = (t0 >> 1) & 0x55555555;
         t1 = (t1 >> 1) & 0x55555555;
         t2 = (t2 >> 1) & 0x55555555;
@@ -156,7 +156,7 @@ static void warp_bitslicing_c(int argc, char *argv[])
     t1 = r1 & 0xAAAAAAAA;
     t2 = r2 & 0xAAAAAAAA;
     t3 = r3 & 0xAAAAAAAA;
-    sbox(&t0, &t1, &t2, &t3);
+    // sbox(&t0, &t1, &t2, &t3);
     t0 = (t0 >> 1) & 0x55555555;
     t1 = (t1 >> 1) & 0x55555555;
     t2 = (t2 >> 1) & 0x55555555;
