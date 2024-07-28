@@ -150,7 +150,7 @@ static void warp_bitslicing_c(int argc, char *argv[])
         r1 ^= t1 ^ ks[r * 4 + 1];
         r2 ^= t2 ^ ks[r * 4 + 2];
         r3 ^= t3 ^ ks[r * 4 + 3];
-        permutation_bitslicing(&r0, &r1, &r2, &r3, p_shift);
+        // permutation_bitslicing(&r0, &r1, &r2, &r3, p_shift);
     }
     t0 = r0 & 0xAAAAAAAA;
     t1 = r1 & 0xAAAAAAAA;
